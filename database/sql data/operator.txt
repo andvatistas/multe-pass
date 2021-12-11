@@ -1,0 +1,8 @@
+INSERT INTO operator(id,name,abbreviation) VALUES
+('aodos','Attiki Odos', 'AO')
+,('gefyra','Gefyra','GF')
+,('kentriki_odos','Kentriki Odos', 'KO')
+,('nea_odos','Nea Odos','NO')
+,('olympia_odos','Olympia Odos','OO')
+,('moreas','Moreas','MR')
+,('egnatia','Egnatia Odos','KO');
