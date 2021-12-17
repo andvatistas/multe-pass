@@ -2,6 +2,7 @@
 const express = require('express');
 const port = 8000;
 const app = express();
+var path = require('path');
 
 app.listen(port, () => {
     console.log('App is running on port ${port}!');
@@ -10,7 +11,7 @@ app.listen(port, () => {
 
 
 app.get('/', (req, res) => {
-    res.send("Hello world -- use API parameters in URL to access DATA");
+     res.sendFile(path.join(__dirname + '/index.html'));
 });
 
 
