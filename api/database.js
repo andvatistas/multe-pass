@@ -1,3 +1,4 @@
+//file not used now
 var mysql = require('mysql');
 
 function executeQuery(req, res, query) {
