@@ -14,9 +14,6 @@ function chargesByQuery(op_ID, date_from, date_to, limiter) {
         AND pass.timestamp BETWEEN '${date_from}' AND '${date_to}'
         GROUP BY tag.providerId;
     `;
-    if (limiter != undefined && Number.isInteger(Number(limiter))) {
-        query += " LIMIT " + Number(limiter);
-    }
     return query;
 }
 
@@ -26,7 +23,6 @@ function chargesBy(req, res) {
     let op_ID = req.params.op_ID;
     let date_from = convertDate(`${req.params.date_from}`);
     let date_to = convertDate(`${req.params.date_to}`);
-    let limiter = req.query.limit;
 
     let query = chargesByQuery(op_ID, date_from, date_to, limiter);
     DB.query(query, (err, resultPPOList) => {
