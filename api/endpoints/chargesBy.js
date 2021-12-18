@@ -4,7 +4,7 @@ const moment = require('moment');
 const router = express.Router();
 const convertDate = require('../helpers');
 
-function chargesByQuery(op_ID, date_from, date_to, limiter) {
+function chargesByQuery(op_ID, date_from, date_to) {
     let query = `
         SELECT tag.providerId as VisitingOperator, COUNT(tag.providerId) as NumberOfPasses, SUM(charge) as PassesCost FROM pass 
         INNER JOIN station ON pass.stationRef = station.id
@@ -24,7 +24,7 @@ function chargesBy(req, res) {
     let date_from = convertDate(`${req.params.date_from}`);
     let date_to = convertDate(`${req.params.date_to}`);
 
-    let query = chargesByQuery(op_ID, date_from, date_to, limiter);
+    let query = chargesByQuery(op_ID, date_from, date_to);
     DB.query(query, (err, resultPPOList) => {
         if (err) throw err;
         let resultJson = {
