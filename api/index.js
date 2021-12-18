@@ -23,7 +23,8 @@ const passesPerStation = require("./endpoints/passesPerStation.js");
 
 //bind all endpoints to app router
 //router -> when the URL is modified somehow, it will detect that change and render the view that is associated with the new URL
-app.use('/', chargesBy);
-app.use('/', passesAnalysis);
-app.use('/', passesCost);
-app.use('/', passesPerStation);
+const baseUrl = '/interoperability/api';
+app.use(baseUrl, chargesBy);
+app.use(baseUrl, passesAnalysis);
+app.use(baseUrl, passesCost);
+app.use(baseUrl, passesPerStation);
