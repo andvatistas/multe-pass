@@ -6,12 +6,19 @@ const convertDate = require('../helpers');
 
 function passesPerStationQuery(stationID, date_from, date_to) {
     let query = `
-        SELECT pass.id AS PassID,pass.timestamp AS PassTimeStamp, tag.vehicleId AS VehicleID, operator.name AS TagProvider, pass.charge AS PassCharge, case when station.stationProvider=tag.providerId THEN 'home' ELSE 'visitor' END PassType
+        SELECT 
+            ROW_NUMBER() OVER(ORDER BY pass.timestamp) as PassIndex,
+            pass.id AS PassID,
+            pass.timestamp AS PassTimeStamp,
+            tag.vehicleId AS VehicleID,
+            operator.name AS TagProvider,
+            pass.charge AS PassCharge,
+            case when station.stationProvider = tag.providerId THEN 'home' ELSE 'visitor' END PassType
         FROM pass
         INNER JOIN station ON pass.stationRef = station.id
         INNER JOIN tag ON pass.vehicleRef = tag.vehicleId
-        INNER JOIN operator ON tag.providerId=operator.id
-        WHERE pass.stationRef= '${stationID}'
+        INNER JOIN operator ON tag.providerId = operator.id
+        WHERE pass.stationRef = '${stationID}'
         AND pass.timestamp BETWEEN '${date_from}' AND '${date_to}'
         ORDER BY pass.timestamp ASC
     `;
@@ -32,11 +39,11 @@ function passesPerStation(req, res) {
     let queryProvider = `
         SELECT station.stationProvider
         FROM station
-        WHERE station.id='${stationID}'
+        WHERE station.id ='${stationID}'
         LIMIT 1
     `;
 
-    DB.query(queryProvider,(err, resultStationOperator)=>{
+    DB.query(queryProvider, (err, resultStationOperator) => {
         if (err) throw err;
 
         DB.query(query, (err, resultPassesList) => {
@@ -55,5 +62,5 @@ function passesPerStation(req, res) {
     });
 }
 
-router.get('/PassesPerStation/:stationID/:date_from/:date_to',passesPerStation)
+router.get('/PassesPerStation/:stationID/:date_from/:date_to', passesPerStation)
 module.exports = router;
