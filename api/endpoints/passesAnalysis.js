@@ -22,8 +22,7 @@ function passesAnalysisQuery(op1_ID, op2_ID, date_from, date_to) {
 			tag.providerId = '${op2_ID}' 
 			AND station.stationProvider = '${op1_ID}'
 			AND pass.timestamp BETWEEN '${date_from}' AND '${date_to}'
-		ORDER BY
-			pass.timestamp ASC;
+		ORDER BY pass.timestamp ASC;
     `;
     return query;
 }

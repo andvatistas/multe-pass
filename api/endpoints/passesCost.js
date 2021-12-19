@@ -6,13 +6,17 @@ const convertDate = require('../helpers');
 
 function passesCostQuery(op1_ID, op2_ID, date_from, date_to) {
     let query = `
-        SELECT COUNT(pass.id) AS NumberOfPasses, SUM(pass.charge) AS PassesCost
-        FROM pass
-        INNER JOIN station ON pass.stationRef = station.id
-        INNER JOIN tag ON pass.vehicleRef = tag.vehicleId
-        WHERE station.stationProvider = '${op1_ID}'
-        AND tag.providerId = '${op2_ID}'
-        AND pass.timestamp BETWEEN '${date_from}' AND '${date_to}'
+        SELECT 
+            COUNT(pass.id) AS NumberOfPasses,
+            SUM(pass.charge) AS PassesCost
+        FROM 
+            pass
+            INNER JOIN station ON pass.stationRef = station.id
+            INNER JOIN tag ON pass.vehicleRef = tag.vehicleId
+        WHERE 
+            station.stationProvider = '${op1_ID}'
+            AND tag.providerId = '${op2_ID}'
+            AND pass.timestamp BETWEEN '${date_from}' AND '${date_to}'
     `;
     return query;
 }
@@ -41,5 +45,5 @@ function passesCost(req, res) {
     });
 }
 
-router.get('/PassesCost/:op1_ID/:op2_ID/:date_from/:date_to',passesCost)
+router.get('/PassesCost/:op1_ID/:op2_ID/:date_from/:date_to', passesCost)
 module.exports = router;

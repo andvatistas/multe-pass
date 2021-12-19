@@ -6,12 +6,18 @@ const convertDate = require('../helpers');
 
 function chargesByQuery(op_ID, date_from, date_to) {
     let query = `
-        SELECT tag.providerId as VisitingOperator, COUNT(tag.providerId) as NumberOfPasses, SUM(charge) as PassesCost FROM pass 
-        INNER JOIN station ON pass.stationRef = station.id
-        INNER JOIN tag ON pass.vehicleRef = tag.vehicleId
-        WHERE station.id = '${op_ID}'
-        AND station.stationProvider != tag.providerId 
-        AND pass.timestamp BETWEEN '${date_from}' AND '${date_to}'
+        SELECT 
+            tag.providerId as VisitingOperator,
+            COUNT(tag.providerId) as NumberOfPasses,
+            SUM(charge) as PassesCost 
+        FROM 
+            pass 
+            INNER JOIN station ON pass.stationRef = station.id
+            INNER JOIN tag ON pass.vehicleRef = tag.vehicleId
+        WHERE 
+            station.id = '${op_ID}'
+            AND station.stationProvider != tag.providerId 
+            AND pass.timestamp BETWEEN '${date_from}' AND '${date_to}'
         GROUP BY tag.providerId;
     `;
     return query;

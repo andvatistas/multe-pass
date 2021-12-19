@@ -14,12 +14,14 @@ function passesPerStationQuery(stationID, date_from, date_to) {
             operator.name AS TagProvider,
             pass.charge AS PassCharge,
             case when station.stationProvider = tag.providerId THEN 'home' ELSE 'visitor' END PassType
-        FROM pass
-        INNER JOIN station ON pass.stationRef = station.id
-        INNER JOIN tag ON pass.vehicleRef = tag.vehicleId
-        INNER JOIN operator ON tag.providerId = operator.id
-        WHERE pass.stationRef = '${stationID}'
-        AND pass.timestamp BETWEEN '${date_from}' AND '${date_to}'
+        FROM 
+            pass
+            INNER JOIN station ON pass.stationRef = station.id
+            INNER JOIN tag ON pass.vehicleRef = tag.vehicleId
+            INNER JOIN operator ON tag.providerId = operator.id
+        WHERE 
+            pass.stationRef = '${stationID}'
+            AND pass.timestamp BETWEEN '${date_from}' AND '${date_to}'
         ORDER BY pass.timestamp ASC
     `;
     return query;
