@@ -1,34 +1,57 @@
+const DB = require('../database').connection;
 const express = require('express');
+const moment = require('moment');
 const router = express.Router();
-var mysql = require('mysql');
+const convertDate = require('../helpers');
 
-function passesAnalysis(req,res){
-
-  var con = mysql.createConnection({
-      host: "localhost",
-      user: "root",
-      password: "",
-      database: "multe-pass"
-  });
-	con.connect(function(err) {
-		if (err) throw err;
-		console.log("Connected!");
-		let limiter=req.query.limit;
-		let myQuery="SELECT * FROM pass WHERE pass.id="+"'"+req.params.op_ID+"'"; //
-		if(limiter==undefined || Number.isInteger(Number(limiter))==false){}
-			else{
-				myQuery=myQuery +" LIMIT " +Number(limiter);
-			}
-
-			console.log(myQuery)
-			con.query(myQuery, function (err, result, fields){
-				if (err) throw err;
-				res.send(result);
-			});
-		});
-
-
+function passesAnalysisQuery(op1_ID, op2_ID, date_from, date_to) {
+    let query = `
+		SELECT
+			ROW_NUMBER() OVER(ORDER BY pass.timestamp) AS PassIndex,
+			pass.id AS PassID,
+			station.id AS StationID,
+			pass.timestamp AS TimeStamp,
+			tag.vehicleId AS VehicleID,
+			pass.charge AS Charge
+		FROM
+			pass
+			INNER JOIN station ON pass.stationRef = station.id
+			INNER JOIN tag ON pass.vehicleRef = tag.vehicleId
+			INNER JOIN operator ON tag.providerId = operator.id
+		WHERE
+			tag.providerId = '${op2_ID}' 
+			AND station.stationProvider = '${op1_ID}'
+			AND pass.timestamp BETWEEN '${date_from}' AND '${date_to}'
+		ORDER BY
+			pass.timestamp ASC;
+    `;
+    return query;
 }
 
-router.get('/PassesAnalysis/:op1_ID/:op2_ID/:date_from/:date_to',passesAnalysis)
+
+function passesAnalysis(req, res) {
+    let requestTimestamp = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
+
+    let op1_ID = req.params.op1_ID;
+    let op2_ID = req.params.op2_ID;
+    let date_from = convertDate(`${req.params.date_from}`);
+    let date_to = convertDate(`${req.params.date_to}`);
+
+    let query = passesAnalysisQuery(op1_ID, op2_ID, date_from, date_to);
+    DB.query(query, (err, resultPassesList) => {
+        if (err) throw err;
+        let resultJson = {
+            "op1_ID": op1_ID,
+            "op2_ID": op2_ID,
+            "RequestTimestamp": requestTimestamp,
+            "PeriodFrom": date_from,
+            "PeriodTo": date_to,
+            "NumberOfPasses": resultPassesList.length,
+            "PassesList": resultPassesList
+        }
+        res.send(resultJson);
+    });
+}
+
+router.get('/PassesAnalysis/:op1_ID/:op2_ID/:date_from/:date_to', passesAnalysis)
 module.exports = router;
