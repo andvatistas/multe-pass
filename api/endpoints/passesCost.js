@@ -1,33 +1,44 @@
+const DB = require('../database').connection;
 const express = require('express');
+const moment = require('moment');
 const router = express.Router();
-var mysql = require('mysql');
+const convertDate = require('../helpers');
 
-function passesCost(req,res){
+function passesCostQuery(op1_ID, op2_ID, date_from, date_to) {
+    let query = `
+        SELECT COUNT(pass.id) AS NumberOfPasses, SUM(pass.charge) AS PassesCost
+        FROM pass
+        INNER JOIN station ON pass.stationRef = station.id
+        INNER JOIN tag ON pass.vehicleRef = tag.vehicleId
+        WHERE station.stationProvider = '${op1_ID}'
+        AND tag.providerId = '${op2_ID}'
+        AND pass.timestamp BETWEEN '${date_from}' AND '${date_to}'
+    `;
+    return query;
+}
 
-  var con = mysql.createConnection({
-      host: "localhost",
-      user: "root",
-      password: "",
-      database: "multe-pass"
-  });
-	con.connect(function(err) {
-		if (err) throw err;
-		console.log("Connected!");
-		let limiter=req.query.limit;
-		let myQuery="SELECT * FROM pass WHERE pass.id="+"'"+req.params.op_ID+"'"; //
-		if(limiter==undefined || Number.isInteger(Number(limiter))==false){}
-			else{
-				myQuery=myQuery +" LIMIT " +Number(limiter);
-			}
+function passesCost(req, res) {
+    let requestTimestamp = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
 
-			console.log(myQuery)
-			con.query(myQuery, function (err, result, fields){
-				if (err) throw err;
-				res.send(result);
-			});
-		});
+    let op1_ID = req.params.op1_ID;
+    let op2_ID = req.params.op2_ID;
+    let date_from = convertDate(`${req.params.date_from}`);
+    let date_to = convertDate(`${req.params.date_to}`);
 
-
+    let query = passesCostQuery(op1_ID, op2_ID, date_from, date_to);
+    DB.query(query, (err, resultList) => {
+        if (err) throw err;
+        let resultJson = {
+            "op1_ID": op1_ID,
+            "op2_ID": op2_ID,
+            "RequestTimestamp": requestTimestamp,
+            "PeriodFrom": date_from,
+            "PeriodTo": date_to,
+            "NumberOfPasses": resultList[0].NumberOfPasses,
+            "PassesCost": resultList[0].PassesCost
+        }
+        res.send(resultJson);
+    });
 }
 
 router.get('/PassesCost/:op1_ID/:op2_ID/:date_from/:date_to',passesCost)
