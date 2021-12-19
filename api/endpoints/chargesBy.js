@@ -1,24 +1,29 @@
 const DB = require('../database').connection;
 const express = require('express');
-const moment = require('moment');
 const router = express.Router();
-const convertDate = require('../helpers');
+const { convertDate, getCurrentTimestamp } = require('../helpers');
 
 function chargesByQuery(op_ID, date_from, date_to) {
     let query = `
-        SELECT tag.providerId as VisitingOperator, COUNT(tag.providerId) as NumberOfPasses, SUM(charge) as PassesCost FROM pass 
-        INNER JOIN station ON pass.stationRef = station.id
-        INNER JOIN tag ON pass.vehicleRef = tag.vehicleId
-        WHERE station.id = '${op_ID}'
-        AND station.stationProvider != tag.providerId 
-        AND pass.timestamp BETWEEN '${date_from}' AND '${date_to}'
+        SELECT 
+            tag.providerId as VisitingOperator,
+            COUNT(tag.providerId) as NumberOfPasses,
+            SUM(charge) as PassesCost 
+        FROM 
+            pass 
+            INNER JOIN station ON pass.stationRef = station.id
+            INNER JOIN tag ON pass.vehicleRef = tag.vehicleId
+        WHERE 
+            station.id = '${op_ID}'
+            AND station.stationProvider != tag.providerId 
+            AND pass.timestamp BETWEEN '${date_from}' AND '${date_to}'
         GROUP BY tag.providerId;
     `;
     return query;
 }
 
 function chargesBy(req, res) {
-    let requestTimestamp = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
+    let requestTimestamp = getCurrentTimestamp();
 
     let op_ID = req.params.op_ID;
     let date_from = convertDate(`${req.params.date_from}`);

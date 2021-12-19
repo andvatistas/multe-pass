@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 function convertDate(urlDate) {
     let year = urlDate.substring(0, 4);
     let month = urlDate.substring(4, 6);
@@ -5,4 +7,8 @@ function convertDate(urlDate) {
     return `${year}-${month}-${day}`
 }
 
-module.exports = convertDate;
+function getCurrentTimestamp() {
+    return moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
+}
+
+module.exports = { convertDate, getCurrentTimestamp };

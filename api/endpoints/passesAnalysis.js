@@ -1,8 +1,7 @@
 const DB = require('../database').connection;
 const express = require('express');
-const moment = require('moment');
 const router = express.Router();
-const convertDate = require('../helpers');
+const { convertDate, getCurrentTimestamp } = require('../helpers');
 
 function passesAnalysisQuery(op1_ID, op2_ID, date_from, date_to) {
     let query = `
@@ -22,15 +21,14 @@ function passesAnalysisQuery(op1_ID, op2_ID, date_from, date_to) {
 			tag.providerId = '${op2_ID}' 
 			AND station.stationProvider = '${op1_ID}'
 			AND pass.timestamp BETWEEN '${date_from}' AND '${date_to}'
-		ORDER BY
-			pass.timestamp ASC;
+		ORDER BY pass.timestamp ASC;
     `;
     return query;
 }
 
 
 function passesAnalysis(req, res) {
-    let requestTimestamp = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
+    let requestTimestamp = getCurrentTimestamp();
 
     let op1_ID = req.params.op1_ID;
     let op2_ID = req.params.op2_ID;
