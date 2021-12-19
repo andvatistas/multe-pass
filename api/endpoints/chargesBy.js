@@ -1,8 +1,7 @@
 const DB = require('../database').connection;
 const express = require('express');
-const moment = require('moment');
 const router = express.Router();
-const convertDate = require('../helpers');
+const { convertDate, getCurrentTimestamp } = require('../helpers');
 
 function chargesByQuery(op_ID, date_from, date_to) {
     let query = `
@@ -24,7 +23,7 @@ function chargesByQuery(op_ID, date_from, date_to) {
 }
 
 function chargesBy(req, res) {
-    let requestTimestamp = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
+    let requestTimestamp = getCurrentTimestamp();
 
     let op_ID = req.params.op_ID;
     let date_from = convertDate(`${req.params.date_from}`);
