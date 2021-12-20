@@ -10,7 +10,10 @@ const sqlConfig = {
 const connection = mysql.createConnection(sqlConfig);
 
 connection.connect((err) => {
-    if (err) throw err;
+    if (err) {
+        console.error(err);
+        return res.status(500).send("Internal error");
+    }
     console.log("Sql connection successful");
 });
 
