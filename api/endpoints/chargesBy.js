@@ -12,7 +12,7 @@ function chargesByQuery(op_ID, date_from, date_to) {
             COUNT(tag.providerId) as NumberOfPasses,
             SUM(charge) as PassesCost 
         FROM 
-            pass 
+            pass
             INNER JOIN station ON pass.stationRef = station.id
             INNER JOIN tag ON pass.vehicleRef = tag.vehicleId
         WHERE 
@@ -28,7 +28,7 @@ function chargesBy(req, res) {
     let requestTimestamp = getCurrentTimestamp();
 
     const errors = validationResult(req);
-    if (errors) {
+    if (!errors.isEmpty) {
         return res.status(400).send(errors);
     }
 
@@ -38,7 +38,10 @@ function chargesBy(req, res) {
 
     let query = chargesByQuery(op_ID, date_from, date_to);
     DB.query(query, (err, resultPPOList) => {
-        if (err) throw err;
+        if (err) {
+            console.error(err);
+            return res.status(500).send("Internal error");
+        }
         let resultJson = {
             "op_ID": op_ID,
             "RequestTimestamp": requestTimestamp,

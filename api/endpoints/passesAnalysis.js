@@ -34,7 +34,7 @@ function passesAnalysis(req, res) {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return result.status(400).send(errors);
+        return res.status(400).send(errors);
     }
 
     let op1_ID = req.params.op1_ID;
@@ -44,7 +44,10 @@ function passesAnalysis(req, res) {
 
     let query = passesAnalysisQuery(op1_ID, op2_ID, date_from, date_to);
     DB.query(query, (err, resultPassesList) => {
-        if (err) throw err;
+        if (err) {
+            console.error(err);
+            return res.status(500).send("Internal error");
+        }
         let resultJson = {
             "op1_ID": op1_ID,
             "op2_ID": op2_ID,

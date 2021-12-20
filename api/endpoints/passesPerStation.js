@@ -34,7 +34,7 @@ function passesPerStation(req, res) {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return result.status(400).send(errors);
+        return res.status(400).send(errors);
     }
 
     let stationID = req.params.stationID;
@@ -48,11 +48,17 @@ function passesPerStation(req, res) {
         LIMIT 1
     `;
     DB.query(queryProvider, (err, resultStationOperator) => {
-        if (err) throw err;
+        if (err) {
+            console.error(err);
+            return res.status(500).send("Internal error");
+        }
 
         let query = passesPerStationQuery(stationID, date_from, date_to);
         DB.query(query, (err, resultPassesList) => {
-            if (err) throw err;
+            if (err) {
+                console.error(err);
+                return res.status(500).send("Internal error");
+            }
             let resultJson = {
                 "Station": stationID,
                 "StationOperator": resultStationOperator[0].stationProvider,
