@@ -1,4 +1,5 @@
 const moment = require('moment');
+const { Parser } = require('json2csv');
 
 function convertDate(urlDate) {
     let year = urlDate.substring(0, 4);
@@ -11,4 +12,67 @@ function getCurrentTimestamp() {
     return moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
 }
 
-module.exports = { convertDate, getCurrentTimestamp };
+function formatIsCSV(req) {
+    let format = req.query.format
+    return format != null && format == "csv";
+}
+
+function formatIsJson(req) {
+    let format = req.query.format
+    return format == null || format == "json";
+}
+
+function sendFormattedResult(req, res, json) {
+    if (formatIsCSV(req))
+        res.send(toCSV(json));
+    else if (formatIsJson(req))
+        res.send(json);
+    else
+        res.status(400).send("400: Bad request");
+}
+
+function toCSV(json) {
+    function isArray(what) {
+        return Object.prototype.toString.call(what) === '[object Array]';
+    }
+
+    for (var i in json) {
+        console.log(i);
+        if (isArray(json[i])) {
+            // Get the fields of the first element of the array
+            const fields = Object.keys(json[i][0]);
+            const opts = { fields };
+            try {
+                const parser = new Parser(opts);
+                console.log(json[i][0]);
+                return parser.parse(json[i]);
+            } catch (err) {
+                console.error(err);
+                break;
+            }
+        }
+    }
+}
+
+// function toCSV(json) {
+//     function isArray(what) {
+//         return Object.prototype.toString.call(what) === '[object Array]';
+//     }
+
+//     for (var i in json) {
+//         if (isArray(json[i])) {
+//             const fields = Object.keys(json[i]);
+//             const opts = { fields };
+
+//             try {
+//                 const parser = new Parser(opts);
+//                 return parser.parse(json);
+//             } catch (err) {
+//                 console.error(err);
+//                 break;
+//             }
+//         }
+//     }
+// }
+
+module.exports = { convertDate, getCurrentTimestamp, sendFormattedResult };

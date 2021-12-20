@@ -1,7 +1,7 @@
 const DB = require('../database').connection;
 const express = require('express');
 const router = express.Router();
-const { convertDate, getCurrentTimestamp } = require('../helpers');
+const { convertDate, getCurrentTimestamp, sendFormattedResult } = require('../helpers');
 
 function passesPerStationQuery(stationID, date_from, date_to) {
     let query = `
@@ -55,7 +55,7 @@ function passesPerStation(req, res) {
                 "NumberOfPasses": resultPassesList.length,
                 "PassesList": resultPassesList
             }
-            res.send(resultJson);
+            sendFormattedResult(req, res, resultJson);
         });
     });
 }
