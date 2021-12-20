@@ -12,14 +12,17 @@ app.get('/', (req, res) => {
 });
 
 // load all endpoints
+const healthcheck = require("./endpoints/healthcheck.js");
 const chargesBy = require("./endpoints/chargesBy.js");
 const passesAnalysis = require("./endpoints/passesAnalysis.js");
 const passesCost = require("./endpoints/passesCost.js");
 const passesPerStation = require("./endpoints/passesPerStation.js");
 
+
 //bind all endpoints to app router with base url
 //router -> when the URL is modified somehow, it will detect that change and render the view that is associated with the new URL
 const baseUrl = '/interoperability/api';
+app.use(baseUrl, healthcheck);
 app.use(baseUrl, chargesBy);
 app.use(baseUrl, passesAnalysis);
 app.use(baseUrl, passesCost);
