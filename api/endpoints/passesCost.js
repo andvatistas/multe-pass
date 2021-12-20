@@ -1,8 +1,7 @@
 const DB = require('../database').connection;
 const express = require('express');
-const moment = require('moment');
 const router = express.Router();
-const { convertDate, getCurrentTimestamp } = require('../helpers');
+const { convertDate, getCurrentTimestamp, sendFormattedResult } = require('../helpers');
 
 function passesCostQuery(op1_ID, op2_ID, date_from, date_to) {
     let query = `
@@ -41,7 +40,7 @@ function passesCost(req, res) {
             "NumberOfPasses": resultList[0].NumberOfPasses,
             "PassesCost": resultList[0].PassesCost
         }
-        res.send(resultJson);
+        sendFormattedResult(req, res, resultJson);
     });
 }
 
