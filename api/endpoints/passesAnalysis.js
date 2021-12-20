@@ -1,7 +1,9 @@
 const DB = require('../database').connection;
 const express = require('express');
 const router = express.Router();
+const { validationResult } = require('express-validator');
 const { convertDate, getCurrentTimestamp, sendFormattedResult } = require('../helpers');
+const { isValidOpID, isValidDate } = require('../validators');
 
 function passesAnalysisQuery(op1_ID, op2_ID, date_from, date_to) {
     let query = `
@@ -30,6 +32,11 @@ function passesAnalysisQuery(op1_ID, op2_ID, date_from, date_to) {
 function passesAnalysis(req, res) {
     let requestTimestamp = getCurrentTimestamp();
 
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return result.status(400).send(errors);
+    }
+
     let op1_ID = req.params.op1_ID;
     let op2_ID = req.params.op2_ID;
     let date_from = convertDate(`${req.params.date_from}`);
@@ -47,9 +54,17 @@ function passesAnalysis(req, res) {
             "NumberOfPasses": resultPassesList.length,
             "PassesList": resultPassesList
         }
-        sendFormattedResult(req, res, resultJson);
+        if (resultPassesList.length == 0)
+            res.status(402).send("Data not found");
+        else
+            sendFormattedResult(req, res, resultJson);
     });
 }
 
-router.get('/PassesAnalysis/:op1_ID/:op2_ID/:date_from/:date_to', passesAnalysis)
+router.get('/PassesAnalysis/:op1_ID/:op2_ID/:date_from/:date_to',
+    isValidOpID('op1_ID'),
+    isValidOpID('op2_ID'),
+    isValidDate('date_from'),
+    isValidDate('date_to'),
+    passesAnalysis)
 module.exports = router;

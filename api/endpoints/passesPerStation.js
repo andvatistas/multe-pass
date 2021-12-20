@@ -1,7 +1,9 @@
 const DB = require('../database').connection;
 const express = require('express');
 const router = express.Router();
+const { validationResult } = require('express-validator');
 const { convertDate, getCurrentTimestamp, sendFormattedResult } = require('../helpers');
+const { isValidStation, isValidDate } = require('../validators');
 
 function passesPerStationQuery(stationID, date_from, date_to) {
     let query = `
@@ -30,6 +32,11 @@ function passesPerStationQuery(stationID, date_from, date_to) {
 function passesPerStation(req, res) {
     let requestTimestamp = getCurrentTimestamp();
 
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return result.status(400).send(errors);
+    }
+
     let stationID = req.params.stationID;
     let date_from = convertDate(`${req.params.date_from}`);
     let date_to = convertDate(`${req.params.date_to}`);
@@ -55,10 +62,18 @@ function passesPerStation(req, res) {
                 "NumberOfPasses": resultPassesList.length,
                 "PassesList": resultPassesList
             }
-            sendFormattedResult(req, res, resultJson);
+            if (resultPassesList.length == 0)
+                res.status(402).send("Data not found");
+            else
+                sendFormattedResult(req, res, resultJson);
         });
     });
+
 }
 
-router.get('/PassesPerStation/:stationID/:date_from/:date_to', passesPerStation)
+router.get('/PassesPerStation/:stationID/:date_from/:date_to',
+    isValidStation('stationID'),
+    isValidDate('date_from'),
+    isValidDate('date_to'),
+    passesPerStation)
 module.exports = router;

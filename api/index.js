@@ -27,3 +27,8 @@ app.use(baseUrl, chargesBy);
 app.use(baseUrl, passesAnalysis);
 app.use(baseUrl, passesCost);
 app.use(baseUrl, passesPerStation);
+app.use((err, req, res, next) => {
+    console.log("Internal error");
+    res.status(500).send("500: Internal server error");
+    next();
+})

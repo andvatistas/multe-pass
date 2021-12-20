@@ -23,6 +23,10 @@ function formatIsJson(req) {
 }
 
 function sendFormattedResult(req, res, json) {
+    if (json.length == 0) {
+        res.status(402).send("402: No data found");
+        return;
+    }
     if (formatIsCSV(req))
         res.send(toCSV(json));
     else if (formatIsJson(req))

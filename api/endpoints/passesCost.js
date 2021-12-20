@@ -1,7 +1,9 @@
 const DB = require('../database').connection;
 const express = require('express');
 const router = express.Router();
+const { validationResult } = require('express-validator');
 const { convertDate, getCurrentTimestamp, sendFormattedResult } = require('../helpers');
+const { isValidDate, isValidOpID } = require('../validators');
 
 function passesCostQuery(op1_ID, op2_ID, date_from, date_to) {
     let query = `
@@ -23,12 +25,18 @@ function passesCostQuery(op1_ID, op2_ID, date_from, date_to) {
 function passesCost(req, res) {
     let requestTimestamp = getCurrentTimestamp();
 
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return result.status(400).send(errors);
+    }
+
     let op1_ID = req.params.op1_ID;
     let op2_ID = req.params.op2_ID;
     let date_from = convertDate(`${req.params.date_from}`);
     let date_to = convertDate(`${req.params.date_to}`);
 
     let query = passesCostQuery(op1_ID, op2_ID, date_from, date_to);
+
     DB.query(query, (err, resultList) => {
         if (err) throw err;
         let resultJson = {
@@ -40,9 +48,17 @@ function passesCost(req, res) {
             "NumberOfPasses": resultList[0].NumberOfPasses,
             "PassesCost": resultList[0].PassesCost
         }
-        sendFormattedResult(req, res, resultJson);
+        if (resultList.length == 0)
+            res.status(402).send("Data not found");
+        else
+            sendFormattedResult(req, res, resultJson);
     });
 }
 
-router.get('/PassesCost/:op1_ID/:op2_ID/:date_from/:date_to', passesCost)
+router.get('/PassesCost/:op1_ID/:op2_ID/:date_from/:date_to',
+    isValidOpID('op1_ID'),
+    isValidOpID('op2_ID'),
+    isValidDate('date_from'),
+    isValidDate('date_to'),
+    passesCost)
 module.exports = router;

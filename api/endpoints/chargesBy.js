@@ -1,7 +1,9 @@
 const DB = require('../database').connection;
 const express = require('express');
 const router = express.Router();
+const { validationResult } = require('express-validator');
 const { convertDate, getCurrentTimestamp, sendFormattedResult } = require('../helpers');
+const { isValidDate, isValidOpID } = require('../validators');
 
 function chargesByQuery(op_ID, date_from, date_to) {
     let query = `
@@ -25,6 +27,11 @@ function chargesByQuery(op_ID, date_from, date_to) {
 function chargesBy(req, res) {
     let requestTimestamp = getCurrentTimestamp();
 
+    const errors = validationResult(req);
+    if (errors) {
+        return res.status(400).send(errors);
+    }
+
     let op_ID = req.params.op_ID;
     let date_from = convertDate(`${req.params.date_from}`);
     let date_to = convertDate(`${req.params.date_to}`);
@@ -39,9 +46,16 @@ function chargesBy(req, res) {
             "PeriodTo": date_to,
             "PPOList": resultPPOList
         }
-        sendFormattedResult(req, res, resultJson);
+        if (resultPPOList.length == 0)
+            res.status(402).send("Data not found");
+        else
+            sendFormattedResult(req, res, resultJson);
     });
 }
 
-router.get('/ChargesBy/:op_ID/:date_from/:date_to', chargesBy)
+router.get('/ChargesBy/:op_ID/:date_from/:date_to',
+    isValidDate('date_from'),
+    isValidDate('date_to'),
+    isValidOpID('op_ID'),
+    chargesBy)
 module.exports = router;
