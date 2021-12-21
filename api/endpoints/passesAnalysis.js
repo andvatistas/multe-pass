@@ -1,9 +1,9 @@
-const DB = require('../database').connection;
+const DB = require('../core/database').connection;
 const express = require('express');
 const router = express.Router();
 const { validationResult } = require('express-validator');
-const { convertDate, getCurrentTimestamp, sendFormattedResult } = require('../helpers');
-const { isValidOpID, isValidDate } = require('../validators');
+const { convertDate, getCurrentTimestamp, sendFormattedResult } = require('../core/helpers');
+const { isValidOpID, isValidDate } = require('../core/validators');
 
 function passesAnalysisQuery(op1_ID, op2_ID, date_from, date_to) {
     let query = `
