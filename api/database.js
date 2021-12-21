@@ -12,7 +12,7 @@ const connection = mysql.createConnection(sqlConfig);
 connection.connect((err) => {
     if (err) {
         console.error(err);
-        return res.status(500).send("Internal error");
+        return;
     }
     console.log("Sql connection successful");
 });
