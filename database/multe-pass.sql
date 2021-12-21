@@ -36547,7 +36547,7 @@ ALTER TABLE `transaction`
 --
 ALTER TABLE `pass`
   ADD CONSTRAINT `FKPass482857` FOREIGN KEY (`stationRef`) REFERENCES `station` (`id`),
-  ADD CONSTRAINT `FKPass546581` FOREIGN KEY (`vehicleRef`) REFERENCES `vehicle` (`id`);
+  ADD CONSTRAINT `FKPass546581` FOREIGN KEY (`vehicleRef`) REFERENCES `vehicle` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `station`
@@ -36560,7 +36560,7 @@ ALTER TABLE `station`
 --
 ALTER TABLE `tag`
   ADD CONSTRAINT `FKTag672545` FOREIGN KEY (`providerId`) REFERENCES `operator` (`id`),
-  ADD CONSTRAINT `FKTag673694` FOREIGN KEY (`vehicleId`) REFERENCES `vehicle` (`id`);
+  ADD CONSTRAINT `FKTag673694` FOREIGN KEY (`vehicleId`) REFERENCES `vehicle` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `transaction`
