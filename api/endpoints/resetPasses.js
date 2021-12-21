@@ -11,7 +11,8 @@ function resetPassesQuery(buffer) {
 }
 
 function resetPasses(req, res) {
-    const buffer = fs.readFileSync("../database/sql_data/default_passes.sql", (err,buffer) => {
+
+    const buffer = fs.readFileSync("../database/sql_data/test_passes.sql", (err,buffer) => {
         if(err){
             console.error(err);
             return res.status(500).send("Internal error in reading the file");
@@ -26,6 +27,7 @@ function resetPasses(req, res) {
             let resultJson = {
             status: "failed"
             }
+            console.error(err);
         }
         else {
             let resultJson = {
@@ -38,6 +40,6 @@ function resetPasses(req, res) {
     });
 }
 
-router.get('/admin/resetpasses', resetPasses)
+router.post('/admin/resetpasses', resetPasses)
 
 module.exports = router;
