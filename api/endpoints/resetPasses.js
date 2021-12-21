@@ -1,43 +1,38 @@
 const DB = require('../database').connection;
 const express = require('express');
 const router = express.Router();
-const { convertDate, getCurrentTimestamp, sendFormattedResult } = require('../helpers');
 const fs = require("fs"); // get filesystem module
-const request = require('request');
 
-function resetPassesQuery(buffer) {
-    let query = `REMOVE * FROM pass;` + buffer;
-    return query;
+const errorResponse = {
+    status: "failed"
+};
+
+const okResponse = {
+    status: "ok"
 }
 
 function resetPasses(req, res) {
-
-    const buffer = fs.readFileSync("../database/sql_data/test_passes.sql", (err,buffer) => {
-        if(err){
-            console.error(err);
-            return res.status(500).send("Internal error in reading the file");
-        }
-        buffer.toString();
-        return buffer;
-    });
-
-    let query = resetPasses(buffer);
-    DB.query(query, (err, resultJson) => {
+    let queryAdd;
+    try {
+        queryAdd = fs.readFileSync("../database/sql_data/default_passes.sql").toString();
+    } catch (error) {
+        console.error(error);
+        res.send(errorResponse);
+        return;
+    }
+    const queryRemove = `DELETE FROM pass;`
+    DB.query(queryRemove, (err, _) => {
         if (err) {
-            let resultJson = {
-            status: "failed"
-            }
             console.error(err);
+            return;
         }
-        else {
-            let resultJson = {
-            status: "OK"
-            }
-        }
-        // request.write();
-        sendFormattedResult(req, res, resultJson);
-        // request.end();
-    });
+        DB.query(queryAdd, (err, _) => {
+            if (err)
+                res.send(errorResponse);
+            else
+                res.send(okResponse);
+        });
+    })
 }
 
 router.post('/admin/resetpasses', resetPasses)
