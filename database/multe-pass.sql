@@ -39,11 +39,11 @@ CREATE TABLE `operator` (
 
 INSERT INTO `operator` (`id`, `name`, `abbreviation`) VALUES
 ('aodos', 'Attiki Odos', 'AO'),
-('egnatia', 'Egnatia Odos', 'KO'),
+('egnatia', 'Egnatia Odos', 'EG'),
 ('gefyra', 'Gefyra', 'GF'),
 ('kentriki_odos', 'Kentriki Odos', 'KO'),
 ('moreas', 'Moreas', 'MR'),
-('nea_odos', 'Nea Odos', 'NO'),
+('nea_odos', 'Nea Odos', 'NE'),
 ('olympia_odos', 'Olympia Odos', 'OO');
 
 -- --------------------------------------------------------
