@@ -5,8 +5,7 @@ from pprint import pprint
 import requests
 import sys
 import pandas as pd
-
-
+from db_connect import *
 
 #Parser Initialization
 parser = argparse.ArgumentParser(description = 'CLI Interoperability API')
@@ -14,6 +13,8 @@ parser = argparse.ArgumentParser(description = 'CLI Interoperability API')
 #Format Parser
 formatparse = argparse.ArgumentParser(add_help=False)
 formatparse.add_argument('--format', help = 'Select output format', default = "json", type = str, choices = ['json','csv'])
+formatparse.add_argument('--delimiter', help = 'Select delimiter for CSV file (most common is either ";" or ","). Only used with --passesupd command', default = ";")
+
 #SubParsers
 sp = parser.add_subparsers(help='Subparser Init')
 
@@ -51,7 +52,12 @@ sp_chargesby.add_argument('--op')
 sp_chargesby.add_argument('--datefrom')
 sp_chargesby.add_argument('--dateto')
 
-#Create the Namespace
+#Passes update
+sp_passesupdate = sp.add_parser('admin', parents = [formatparse], help = 'Update Passes Table in Database')
+sp_passesupdate.add_argument('--passesupd', nargs='?', required=True)
+sp_passesupdate.add_argument('--source')
+
+
 ns = parser.parse_args()
 
 #Output (format) functions
@@ -66,7 +72,6 @@ def print_csv(request):
 
 #Switch - Case ( peripoy :) )
 if sys.argv[1] == 'healthcheck':
-    print('healtcheck')
     request_string = "http://localhost:9103/interoperability/api/admin/healthcheck"
     request = requests.get(request_string)
 elif sys.argv[1] == 'resetvehicles':
@@ -90,10 +95,33 @@ elif sys.argv[1] == 'passescost':
 elif sys.argv[1] == 'chargesby':
     request_string = "http://localhost:9103/interoperability/api/ChargesBy/" + str(ns.op) + "/" + str(ns.datefrom) + "/" + str(ns.dateto)
     request = requests.get(request_string)
+elif sys.argv[1] == 'admin':
+    delimiter_format = ns.delimiter
+    file_source = ns.source
+    csv_data = pd.read_csv(file_source, delimiter_format)
+    header = csv_data.columns
+
+    db_conn = connect_to_db()
+    cur = db_conn.cursor()
+    length = len(csv_data.id)
+
+    j = 0 #set flag for if commit was successful
+    for i in range(length):
+        try:
+            cur.execute("INSERT INTO pass (id,timestamp,charge,stationRef,vehicleRef) VALUES (?, ?, ?, ?, ?)", (csv_data.id[i], str(csv_data.timestamp[i]), csv_data.charge[i], csv_data.stationRef[i], csv_data.vehicleRef[i]))
+            db_conn.commit()
+        except mariadb.Error as err:
+            print(f"Error: {err}")
+            j = 1 #commit was unsuccessful
+
+    if j != 1:
+        print(f"Successfully added {length} passes to DB")
+
+    db_conn.close()
 
 #Format Checks
-if ns.format == 'json':
+if ((ns.format == 'json') & (sys.argv[1] !='admin')) :
     print_json(request)
 
-if ns.format == 'csv':
+if ((ns.format == 'csv') & (sys.argv[1] !='admin')):
     print_csv(request)
