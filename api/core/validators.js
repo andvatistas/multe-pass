@@ -6,11 +6,11 @@ function isValidDate(value) {
 }
 
 function isValidOpID(value) {
-    return param(value, 'OpId has a max length of 10 characters. Example: AO01').isLength({ min: 1, max: 10 })
+    return param(value, 'OpId has a max length of 20 characters. Example: AO01').isLength({ min: 1, max: 20 })
 }
 
 function isValidStation(value) {
-    return param(value, 'StationId has a max length of 20 characters. Example: aodos').isLength({ min: 1, max: 20 })
+    return param(value, 'StationId has a max length of 10 characters. Example: aodos').isLength({ min: 1, max: 10 })
 }
 
 module.exports = {

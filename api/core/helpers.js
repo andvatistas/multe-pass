@@ -35,24 +35,49 @@ function sendFormattedResult(req, res, json) {
         res.status(400).send("400: Bad request");
 }
 
+
 function toCSV(json) {
     function isArray(what) {
         return Object.prototype.toString.call(what) === '[object Array]';
     }
+    let fieldsOuter = Object.keys(json);
+    let valuesOuter = Object.values(json);
 
+    let counter=0;
+    let helpJson = {};
     for (var i in json) {
+        if (!isArray(json[i])) {
+            let helpJson1 = {i : json[i]};
+        }
+        console.log(helpJson);
         if (isArray(json[i])) {
+            fieldsOuter = fieldsOuter.slice(0,counter);
+            valuesOuter = valuesOuter.slice(0,counter);
             // Get the fields of the first element of the array
-            const fields = Object.keys(json[i][0]);
+            const fields = fieldsOuter.concat(Object.keys(json[i][0]));
             const opts = { fields };
+            // console.log(fieldsOuter);
+            // console.log(json);
             try {
                 const parser = new Parser(opts);
-                return parser.parse(json[i]);
+                return parser.parse(valuesOuter.concat(json[i]));
             } catch (err) {
                 console.error(err);
                 break;
             }
         }
+        counter+=1;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
 module.exports = { convertDate, getCurrentTimestamp, sendFormattedResult };
