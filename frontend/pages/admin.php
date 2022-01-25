@@ -7,6 +7,7 @@
     <link href="stylesheet" type = "text/css" href="custom_design.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../scripts.js"></script>
     <title>Multe-Pass Home Page</title>
   </head>
 
@@ -14,8 +15,8 @@
     <!-- NavBar -->
     <nav class="navbar navbar-expand navbar-dark" style="background-color: #5b0ba1">
     <div class="container-fluid">
-      <img src = "../icons/logo_512px.png" width = "40" height = "40">
-      <a class="navbar-brand" href="index.html">Multe-Pass</a>
+      <img src = "/../icons/logo_512px.png" width = "40" height = "40">
+      <a class="navbar-brand" href="/../index.php">Multe-Pass</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -23,13 +24,13 @@
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="pages/admin.html">Admin</a>
+            <a class="nav-link active" aria-current="page" href="admin.php">Admin</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" href="#">Passes</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Passes Analysis</a>
+            <a class="nav-link active" aria-current="page" href="passesAnalysis.php">Passes Analysis</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="#">Charges By</a>
@@ -41,7 +42,7 @@
         <ul class="nav navbar-nav navbar-right">
           <li>
             <li class ="nav-item">
-              <a class="nav-link active" aria-current="page" href="pages/about.html">About</a>
+              <a class="nav-link active" aria-current="page" href="about.php">About</a>
           </li>
       </div>
     </div>
@@ -53,12 +54,14 @@
   <h3>Admin Commands</h3>
   <p>Below you can use the 4 API endpoints for checking DB status or resetting tables</p>
 
+
   <!-- Button Group -->
+  <form id ="adminForm" method = "POST" action="admin.php">
   <div class="btn-group d-flex align-self-center" role="group">
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Healthcheck</button>
-    <button type="button" class="btn btn-primary">Reset Vehicles</button>
-    <button type="button" class="btn btn-primary">Reset Stations</button>
-    <button type="button" class="btn btn-primary">Reset Passes</button>
+    <button type="button" class="btn btn-primary" onclick = "sendRequest('healthceck')" >Healthcheck</button>
+    <button type="button" class="btn btn-primary" onclick = "openModal()">Reset Vehicles</button>
+    <button type="button" class="btn btn-primary" onclick = "openModal()">Reset Stations</button>
+    <button type="button" class="btn btn-primary" onclick = "openModal()">Reset Passes</button>
   </div>
 
   <!-- Modals -->

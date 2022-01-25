@@ -13,31 +13,34 @@
     <!-- NavBar -->
     <nav class="navbar navbar-expand navbar-dark" style="background-color: #5b0ba1">
     <div class="container-fluid">
-      <img src = "../icons/logo_512px.png" width = "40" height = "40">
-      <a class="navbar-brand" href="../index.html">Multe-Pass</a>
+      <img src = "icons/logo_512px.png" width = "40" height = "40">
+      <a class="navbar-brand" href="/../index.php">Multe-Pass</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse" id="navbarsExample02">
+      <div class="collapse navbar-collapse">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link active" aria-current="page" href="admin.php">Admin</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
+            <a class="nav-link active" href="#">Passes</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link active" aria-current="page" href="passesAnalysis.php">Passes Analysis</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link active" aria-current="page" href="#">Charges By</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Passes Cost</a>
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li>
             <li class ="nav-item">
-              <a class="nav-link active" aria-current="page" href="pages/about.html">About</a>
+              <a class="nav-link active" aria-current="page" href="pages/about.php">About</a>
           </li>
       </div>
     </div>
