@@ -69,7 +69,7 @@ ns = parser.parse_args()
 #Output (format) functions
 def print_json(request):
     request_data = request.json()
-    pprint(request_data)
+    print(request_data)
 def print_csv(request):
     request_data = request.content.decode('utf-8')
     print(request_data)

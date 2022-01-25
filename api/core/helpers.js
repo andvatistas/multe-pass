@@ -61,7 +61,6 @@ function toCSV(json) {
             for(let counter=0; counter<length;counter++){
                 json[i][counter] = Object.assign({},helpJson,json[i][counter]);
             }
-            console.log(json[i]);
             try {
                 const parser = new Parser(opts);
                 return parser.parse(json[i]);
