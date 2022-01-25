@@ -44,23 +44,26 @@ function toCSV(json) {
     let valuesOuter = Object.values(json);
 
     let counter=0;
-    let helpJson = {};
+    let helpJson ={};
     for (var i in json) {
         if (!isArray(json[i])) {
-            let helpJson1 = {i : json[i]};
+            helpJson = Object.assign(helpJson, { [i] : json[i]})
         }
-        console.log(helpJson);
+        // console.log(json[i]);
         if (isArray(json[i])) {
             fieldsOuter = fieldsOuter.slice(0,counter);
             valuesOuter = valuesOuter.slice(0,counter);
             // Get the fields of the first element of the array
             const fields = fieldsOuter.concat(Object.keys(json[i][0]));
             const opts = { fields };
-            // console.log(fieldsOuter);
-            // console.log(json);
+            let length=json[i].length;
+            let result={};
+            for(let counter=0; counter<length;counter++){
+                json[i][counter] = Object.assign(helpJson,json[i][counter]);
+            }
             try {
                 const parser = new Parser(opts);
-                return parser.parse(valuesOuter.concat(json[i]));
+                return parser.parse(json[i]);
             } catch (err) {
                 console.error(err);
                 break;
@@ -69,15 +72,5 @@ function toCSV(json) {
         counter+=1;
     }
 }
-
-
-
-
-
-
-
-
-
-
 
 module.exports = { convertDate, getCurrentTimestamp, sendFormattedResult };
