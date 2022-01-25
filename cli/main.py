@@ -5,7 +5,13 @@ from pprint import pprint
 import requests
 import sys
 import pandas as pd
+
 from db_connect import *
+
+#CLI Philosophy: 1) Create a main parser that hold the --format and --delimiter options.
+# 2)Create subparser for every single other command
+# 3)Change the request URL depending on the input
+# 4)Print the request output depending on format
 
 #Parser Initialization
 parser = argparse.ArgumentParser(description = 'CLI Interoperability API')
@@ -57,55 +63,56 @@ sp_passesupdate = sp.add_parser('admin', parents = [formatparse], help = 'Update
 sp_passesupdate.add_argument('--passesupd', nargs='?', required=True)
 sp_passesupdate.add_argument('--source')
 
-
+#Pass final arguments to Namespace
 ns = parser.parse_args()
 
 #Output (format) functions
 def print_json(request):
-    json_data = request.json()
-    pprint(json_data)
-
+    request_data = request.json()
+    pprint(request_data)
 def print_csv(request):
-    json_data = request.json()
-    df = pd.json_normalize(json_data)
-    df.to_csv(sys.stdout)
+    request_data = request.content.decode('utf-8')
+    print(request_data)
 
 #Switch - Case ( peripoy :) )
 if sys.argv[1] == 'healthcheck':
     request_string = "http://localhost:9103/interoperability/api/admin/healthcheck"
-    request = requests.get(request_string)
 elif sys.argv[1] == 'resetvehicles':
     request_string = "http://localhost:9103/interoperability/api/admin/resetvehicles"
-    request = requests.post(request_string)
 elif sys.argv[1] == 'resetpasses':
     request_string = "http://localhost:9103/interoperability/api/admin/resetpasses"
-    request = requests.post(request_string)
 elif sys.argv[1] == 'resetstations':
     request_string = "http://localhost:9103/interoperability/api/admin/resetstations"
-    request = requests.post(request_string)
 elif sys.argv[1] == 'passesperstation':
     request_string = "http://localhost:9103/interoperability/api/passesperstation/" + str(ns.station) + "/" + str(ns.datefrom) + "/" + str(ns.dateto)
-    request = requests.get(request_string)
 elif sys.argv[1] == 'passesanalysis':
     request_string = "http://localhost:9103/interoperability/api/PassesAnalysis/" + str(ns.op1) + "/" + str(ns.op2) + "/" + str(ns.datefrom) +"/" + str(ns.dateto)
-    request = requests.get(request_string)
 elif sys.argv[1] == 'passescost':
     request_string = "http://localhost:9103/interoperability/api/PassesCost/" + str(ns.op1) + "/" + str(ns.op2) + "/" + str(ns.datefrom) +"/" + str(ns.dateto)
-    request = requests.get(request_string)
 elif sys.argv[1] == 'chargesby':
     request_string = "http://localhost:9103/interoperability/api/ChargesBy/" + str(ns.op) + "/" + str(ns.datefrom) + "/" + str(ns.dateto)
-    request = requests.get(request_string)
+
 elif sys.argv[1] == 'admin':
     delimiter_format = ns.delimiter
     file_source = ns.source
+
+    #Read CSV file with Pandas
     csv_data = pd.read_csv(file_source, delimiter_format)
+
+    #Isolate Headers for easier control
     header = csv_data.columns
 
+    #Connect to Database
     db_conn = connect_to_db()
+
+    #Set a cursor
     cur = db_conn.cursor()
+
+    #get length of csv file
     length = len(csv_data.id)
 
     j = 0 #set flag for if commit was successful
+    #Run a for loop for length of csv file and INSER INTO pass one by one
     for i in range(length):
         try:
             cur.execute("INSERT INTO pass (id,timestamp,charge,stationRef,vehicleRef) VALUES (?, ?, ?, ?, ?)", (csv_data.id[i], str(csv_data.timestamp[i]), csv_data.charge[i], csv_data.stationRef[i], csv_data.vehicleRef[i]))
@@ -114,14 +121,32 @@ elif sys.argv[1] == 'admin':
             print(f"Error: {err}")
             j = 1 #commit was unsuccessful
 
+    #check if commit was successful
     if j != 1:
         print(f"Successfully added {length} passes to DB")
 
+    #Close DB connection
     db_conn.close()
 
-#Format Checks
-if ((ns.format == 'json') & (sys.argv[1] !='admin')) :
-    print_json(request)
+#add ?format=csv on request if --format=csv was used
+if (ns.format=='csv'):
+    request_string += "?format=csv"
 
-if ((ns.format == 'csv') & (sys.argv[1] !='admin')):
+if ((sys.argv[1] != 'resetvehicles') | (sys.argv[1] != 'resetpasses') | (sys.argv[1] != 'resetstations')):
+    request = requests.get(request_string)
+else:
+    request = requests.post(request_string)
+
+if (request.status_code == 400):
+    print("400: Bad Request\n")
+elif (request.status_code == 401):
+    print("401: Not Authorized\n")
+elif (request.status_code == 402):
+    print("402: No Data\n")
+elif (request.status_code == 500):
+    print("500: Internal Server Error\n")
+
+if ((sys.argv[1] != 'admin') & (ns.format=='json')):
+    print_json(request)
+if ((sys.argv[1] != 'admin') & (ns.format=='csv')):
     print_csv(request)
