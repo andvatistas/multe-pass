@@ -15,18 +15,19 @@
     <?php include '../components/header.php';?>
 
 <!-- Main Body -->
-<div class = "container">
-  <h3>Admin Commands</h3>
-  <p>Below you can use the 4 API endpoints for checking DB status or resetting tables</p>
+<div class = "container d-flex flex-column align-items-center m-3 p-1">
+  <h4>Admin Commands</h4>
+  <p class = "text-center">Below you can use the 4 API endpoints for checking DB status or resetting tables.
+    Resetting confirms your action before proceeding. </p>
 
 
   <!-- Button Group -->
   <form  action = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method = 'POST'>
     <div class="btn-group d-flex align-self-center" role="group">
       <button type="submit" class="btn btn-primary" name = "endpoint" value = "healthcheck">Healthcheck</button>
-      <button type="submit" class="btn btn-primary" name = "endpoint" value = "resetvehicles">Reset Vehicles</button>
-      <button type="submit" class="btn btn-primary" name = "endpoint" value = "resetstations">Reset Stations</button>
-      <button type="submit" class="btn btn-primary" name = "endpoint" value = "resetpasses">Reset Passes</button>
+      <button type="submit" class="btn btn-primary" name = "endpoint" onclick ="return confirm('Are you sure?');" value = "resetvehicles">Reset Vehicles</button>
+      <button type="submit" class="btn btn-primary" name = "endpoint" onclick ="return confirm('Are you sure?');" value = "resetstations">Reset Stations</button>
+      <button type="submit" class="btn btn-primary" name = "endpoint" onclick ="return confirm('Are you sure?');" value = "resetpasses">Reset Passes</button>
     </div>
   </form>
 </div>
@@ -59,23 +60,24 @@
       CURLOPT_CUSTOMREQUEST => 'POST',
     ));
   }
+}?>
+    <br>
 
+  <?php
+   if ($_SERVER["REQUEST_METHOD"] == "POST") {
+      $response = curl_exec($curl);
+      curl_close($curl);
+      $json_response = json_encode(json_decode($response), JSON_PRETTY_PRINT);
+      echo "<div class = 'container' style = 'padding:20px'>
+                  <div class = 'card'>
+                    <div class = 'card-body'>";
+      echo "<pre>" .$json_response ."</pre>";
+      echo "</div>";
+      echo "</div>";
+      echo "</div>";
 
+          }?>
 
-  ?>
-  <br><br>
-  <div class = "container" style = "padding:20px">
-    <div class = "card">
-      <div class = "card-body">
-        <p>
-        <?php
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-        $json_response = json_encode(json_decode($response), JSON_PRETTY_PRINT);
-        echo "<pre>" . $json_response . "</pre>";
-      }
-      ?>
     </p>
   </div>
 </div>

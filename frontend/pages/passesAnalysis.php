@@ -4,7 +4,7 @@
     <meta charset = "utf-8">
     <meta name = "viewport" content = "width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link href="stylesheet" type = "text/css" href="../custom_design.css">
+    <link rel="stylesheet"  href="../custom_design.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -14,7 +14,7 @@
   <body>
     <?php include '../components/header.php';?>
 
-
+<h4 class = "d-flex justify-content-center m-3 p-1">Passes Analysis Form</h4>
 <div class = "container d-flex justify-content-center" style = "padding-top:10px;">
   <form  action = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method = 'POST'>
     <div class = "form-inline" style = "width:100%;">
@@ -46,11 +46,11 @@
     <div class = "row row-cols-2" >
       <div class="form-group date" name = "datefrom" style = "padding-top:5px;">
         <label class="label">Period Start</label>
-        <input type="text" class = "form-control" name = "datefrom" id="datepicker">
+        <input type="date" class = "form-control" name = "datefrom" id="datepicker">
       </div>
       <div class="form-group date"name = "dateto" style = "padding-top:5px;">
         <label class="label">Period End</label>
-        <input type="text" class = "form-control" name = "dateto" id="dateto">
+        <input type="date" class = "form-control" name = "dateto" id="dateto">
       </div>
   </div>
   <div class = "d-flex justify-content-center" style = "padding-top:20px;">
@@ -81,15 +81,76 @@
   ));
   $response = curl_exec($curl);
   curl_close($curl);
-  $json_response = json_encode(json_decode($response), JSON_PRETTY_PRINT);
+  $json_response = json_decode($response, true);
   }?>
 
-  <br><br>
-  <div class = "container" >
-    <div class = "card" style = "padding:10px">
-      <div class = "card-body">
-        <p><?php  if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        echo "<pre>" . $json_response . "</pre>";} ?></p>
+  <br>
+  <?php   if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (($op1 == '') || ($op2 == '') || ($datefrom == '') || ($dateto == '')){
+      echo "<div class = 'container d-flex justify-content-center'>
+              <div class = 'card'>
+                <div class = 'card-body'>
+                  <p> Please input data into every form!</p>";
+                  echo" </div>";
+                  echo" </div>";
+                  echo" </div>";
+    }
+    else {
+    echo $json_response->PassesList->PassIndex;
+    echo "<div class = 'container d-flex justify-content-center'>
+      <div class = 'card' style = 'padding:10px'>
+        <div class = 'card-body'>
+          <table class = 'passescosttable'>
+            <thead>
+              <tr>
+                <th>Operator 1</th>
+                <th>Operator 2</th>
+                <th>Request Timestamp</th>
+                <th>Period From</th>
+                <th>Period To</th>
+                <th>Number of Passes</th>
+              </tr>
+            </thead>";
+
+          echo "<tr>";
+          echo "<td>".$json_response->op1_ID."</td>";
+          echo "<td>".$json_response->op2_ID."</td>";
+          echo "<td>".$json_response->RequestTimestamp."</td>";
+          echo "<td>".$json_response->PeriodFrom."</td>";
+          echo "<td>".$json_response->PeriodTo."</td>";
+          echo "<td>".$json_response->NumberOfPasses."</td>";
+          echo "</tr>";
+          echo "</table>";
+          echo" </div>";
+          echo" </div>";
+          echo" </div>";
+          echo "<br>";
+
+          echo "<div class = 'container d-flex justify-content-center'>
+            <div class = 'card' style = 'padding:10px'>
+              <div class = 'card-body'>
+                <table class = 'passescosttable'>
+                  <thead>
+                    <tr>
+                      <th>Pass Index</th>
+                      <th>PassID</th>
+                      <th>Station ID</th>
+                      <th>TimeStamp</th>
+                      <th>VehicleID</th>
+                      <th>Charge</th>
+                    </tr>
+                  </thead>";
+
+
+                  echo "</table>";
+                  echo" </div>";
+                  echo" </div>";
+                  echo" </div>";
+                  echo "<br>";
+        }
+      }?>
+
+
   <!-- Footer -->
   <?php include '../components/footer.php';?>
 

@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title>Multe-Pass Passes Analysis</title>
   </head>
 
@@ -44,13 +45,13 @@
       </select>
     </div>
     <div class = "row row-cols-2" >
-      <div class="form-group date" name = "datefrom" style = "padding-top:5px;">
+      <div class="form-group date" data-provide = "datepicker" name = "datefrom" style = "padding-top:5px;">
         <label class="label">Period Start</label>
-        <input type="text" class = "form-control" name = "datefrom" id="datepicker">
+        <input type="date" class = "form-control" data-date-format="YYmmdd" name = "datefrom" id="datepicker">
       </div>
       <div class="form-group date"name = "dateto" style = "padding-top:5px;">
         <label class="label">Period End</label>
-        <input type="text" class = "form-control" name = "dateto" id="dateto">
+        <input type="date" class = "form-control" data-date-format="YYmmdd" name = "dateto" id="dateto">
       </div>
   </div>
   <div class = "d-flex justify-content-center" style = "padding-top:20px;">

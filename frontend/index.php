@@ -31,7 +31,7 @@
                 <a class = "dropdown-item" href ="pages/passesAnalysis.php">Passes Analysis</a>
               </li>
               <li >
-                <a class="dropdown-item" href="#">Charges By</a>
+                <a class="dropdown-item" href="pages/chargesBy.php">Charges By</a>
               </li>
               <li>
                 <a class="dropdown-item" href="pages/passesCost.php">Passes Cost</a>

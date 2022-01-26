@@ -19,7 +19,7 @@
             <a class = 'dropdown-item' href ='passesAnalysis.php'>Passes Analysis</a>
           </li>
           <li >
-            <a class='dropdown-item' href='#'>Charges By</a>
+            <a class='dropdown-item' href='chargesBy.php'>Charges By</a>
           </li>
           <li>
             <a class='dropdown-item' href='passesCost.php'>Passes Cost</a>
