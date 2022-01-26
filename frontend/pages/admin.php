@@ -8,105 +8,81 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../scripts.js"></script>
-    <title>Multe-Pass Home Page</title>
+    <title>Multe-Pass Admin Page</title>
   </head>
 
   <body>
-    <!-- NavBar -->
-    <nav class="navbar navbar-expand navbar-dark" style="background-color: #5b0ba1">
-    <div class="container-fluid">
-      <img src = "/../icons/logo_512px.png" width = "40" height = "40">
-      <a class="navbar-brand" href="/../index.php">Multe-Pass</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse">
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="admin.php">Admin</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="#">Passes</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="passesAnalysis.php">Passes Analysis</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Charges By</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Passes Cost</a>
-          </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li>
-            <li class ="nav-item">
-              <a class="nav-link active" aria-current="page" href="about.php">About</a>
-          </li>
-      </div>
-    </div>
-  </nav>
-  <div class="b-example-divider"></div>
+    <?php include '../components/header.php';?>
 
 <!-- Main Body -->
-<div class = "container" >
+<div class = "container">
   <h3>Admin Commands</h3>
   <p>Below you can use the 4 API endpoints for checking DB status or resetting tables</p>
 
 
   <!-- Button Group -->
-  <form id ="adminForm" method = "POST" action="admin.php">
-  <div class="btn-group d-flex align-self-center" role="group">
-    <button type="button" class="btn btn-primary" onclick = "sendRequest('healthceck')" >Healthcheck</button>
-    <button type="button" class="btn btn-primary" onclick = "openModal()">Reset Vehicles</button>
-    <button type="button" class="btn btn-primary" onclick = "openModal()">Reset Stations</button>
-    <button type="button" class="btn btn-primary" onclick = "openModal()">Reset Passes</button>
-  </div>
-
-  <!-- Modals -->
-    <div class="modal" tabindex="-1" id="exampleModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Modal title</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <p>Modal body text goes here.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
+  <form  action = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method = 'POST'>
+    <div class="btn-group d-flex align-self-center" role="group">
+      <button type="submit" class="btn btn-primary" name = "endpoint" value = "healthcheck">Healthcheck</button>
+      <button type="submit" class="btn btn-primary" name = "endpoint" value = "resetvehicles">Reset Vehicles</button>
+      <button type="submit" class="btn btn-primary" name = "endpoint" value = "resetstations">Reset Stations</button>
+      <button type="submit" class="btn btn-primary" name = "endpoint" value = "resetpasses">Reset Passes</button>
     </div>
-  </div>
+  </form>
 </div>
 
+<?php
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $curl = curl_init();
+    if ($_POST["endpoint"] == "healthcheck"){
+      curl_setopt_array($curl, array(
+      CURLOPT_URL => 'http://localhost:9103/interoperability/api/admin/healthcheck',
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'GET',
+    ));
+    }
+    else{
+      $endpoint = $_POST["endpoint"];
+      curl_setopt_array($curl, array(
+      CURLOPT_URL => 'http://localhost:9103/interoperability/api/admin/' . $endpoint,
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'POST',
+    ));
+  }
 
+
+
+  ?>
+  <br><br>
+  <div class = "container" style = "padding:20px">
+    <div class = "card">
+      <div class = "card-body">
+        <p>
+        <?php
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        $json_response = json_encode(json_decode($response), JSON_PRETTY_PRINT);
+        echo "<pre>" . $json_response . "</pre>";
+      }
+      ?>
+    </p>
+  </div>
+</div>
+</div>
 
 <!-- Footer -->
-<div class="container">
-
-  <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-    <div class="col-md-4 d-flex align-items-center">
-      <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
-      </a>
-      <img src = "../icons/NTUA-logo32px.png" width="24" height="24">
-      <span class="text-muted">softeng | 2021-2022 | TL21-60</span>
-    </div>
-
-    <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-      <li class="ms-3"><a class="text-muted" href="https://github.com/ntua/TL21-60"><i class="bi bi-github" role = "img" aria-label="GitHub"></i>GitHub</a></li>
-      <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"/></svg></a></li>
-      <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"/></svg></a></li>
-    </ul>
-  </footer>
-</div>
-
-<div class="b-example-divider"></div>
-
+<?php include '../components/footer.php';?>
   </body>
 
 

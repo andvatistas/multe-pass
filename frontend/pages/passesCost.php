@@ -1,19 +1,6 @@
 <!DOCTYPE html>
 <html lang = "en">
   <head>
-
-    <!-- <style>
-    .passescosttable th {
-      text-align: center;
-      padding-left: 10px;
-      padding-right: 10px;
-    }
-
-    .passescosttable td {
-      text-align: center;
-    }
-    </style> -->
-
     <meta charset = "utf-8">
     <meta name = "viewport" content = "width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -25,50 +12,10 @@
   </head>
 
   <body>
-    <!-- NavBar -->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #5b0ba1">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/../index.php">Multe-Pass</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <?php include '../components/header.php';?>
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="admin.php">Admin</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href = "#" role = "button" data-bs-toggle="dropdown" data-bs-target="#navbar-nav" aria-expanded="false" id="navbarDropdown">Request Pages</a>
-            <ul class = "dropdown-menu" aria-labelledby="navbarDropdown">
-              <li>
-                <a class = "dropdown-item" href ="passesAnalysis.php">Passes Analysis</a>
-              </li>
-              <li >
-                <a class="dropdown-item" href="#">Charges By</a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#">Passes Cost</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Statistics</a>
-          </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li>
-            <li class ="nav-item">
-            <a class="nav-link active" aria-current="page" href="about.php">About</a>
-          </li>
-      </div>
-    </div>
-  </nav>
-
-  <div class="b-example-divider"></div>
-
-
-<div class = "container d-flex justify-content-center" style = "padding-top:10px;">
+<h4 class = "d-flex justify-content-center m-3 p-1">Passes Cost Form</h4>
+<div class = "container d-flex justify-content-center" >
   <form  action = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method = 'POST'>
     <div class = "form-inline" style = "width:100%;">
       <label class="label">Operator 1</label>
@@ -139,6 +86,16 @@
 
   <br>
   <?php   if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (($op1 == '') || ($op2 == '') || ($datefrom == '') || ($dateto == '')){
+      echo "<div class = 'container d-flex justify-content-center'>
+              <div class = 'card'>
+                <div class = 'card-body'>
+                  <p> Please input data into every form!</p>";
+                  echo" </div>";
+                  echo" </div>";
+                  echo" </div>";
+    }
+    else {
     echo "<div class = 'container d-flex justify-content-center'>
       <div class = 'card' style = 'padding:10px'>
         <div class = 'card-body'>
@@ -168,26 +125,11 @@
           echo" </div>";
           echo" </div>";
           echo" </div>";
-        }?>
+        }
+      }?>
         <br>
   <!-- Footer -->
-  <div class="container fixed-bottom" style = "padding:10px">
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top ">
-      <div class="col-md-4 d-flex align-items-center">
-        <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
-        </a>
-        <span class="text-muted">softeng | 2021-2022 | TL21-60</span>
-      </div>
-
-      <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-        <li class="ms-3"><a class="text-muted" href="https://github.com/ntua/TL21-60"><i class="bi bi-github" role = "img" aria-label="GitHub"></i>GitHub</a></li>
-        <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"/></svg></a></li>
-        <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"/></svg></a></li>
-      </ul>
-    </footer>
-  </div>
-
-  <div class="b-example-divider"></div>
+  <?php include '../components/footer.php';?>
 
     </body>
 
