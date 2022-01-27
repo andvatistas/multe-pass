@@ -6,8 +6,12 @@
   <button class='navbar-toggler' type='button' data-bs-toggle='collapse' data-bs-target=''#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation'>
   <span class='navbar-toggler-icon'></span>
 </button>
+  <div class='d-flex' style='height:100%; width:1px; background-color:black;'>
+    <div class='vr'></div>
+  </div>
 
   <div class='collapse navbar-collapse' id='navbarSupportedContent'>
+
     <ul class='navbar-nav me-auto'>
       <li class='nav-item'>
         <a class='nav-link active' aria-current='page' href='admin.php'>Admin</a>

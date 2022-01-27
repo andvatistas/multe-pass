@@ -54,7 +54,7 @@
       </div>
   </div>
   <div class = "d-flex justify-content-center" style = "padding-top:20px;">
-    <button type="submit" class="btn btn-primary">Send Request</button>
+    <button id = "main_button" type="submit" class="btn btn-primary">Send Request</button>
   </div>
 </form>
 </div>
@@ -81,7 +81,7 @@
   ));
   $response = curl_exec($curl);
   curl_close($curl);
-  $json_response = json_decode($response, true);
+  $json_response = json_decode($response);
   }?>
 
   <br>
@@ -96,10 +96,17 @@
                   echo" </div>";
     }
     else {
-    echo $json_response->PassesList->PassIndex;
     echo "<div class = 'container d-flex justify-content-center'>
       <div class = 'card' style = 'padding:10px'>
-        <div class = 'card-body'>
+        <div class = 'card-body'>";
+        if ($json_response == null){
+          echo "<p>No Data Found! Check your query</p>";
+          echo" </div>";
+          echo" </div>";
+          echo" </div>";
+          }
+          else{
+          echo "
           <table class = 'passescosttable'>
             <thead>
               <tr>
@@ -140,14 +147,27 @@
                       <th>Charge</th>
                     </tr>
                   </thead>";
-
-
-                  echo "</table>";
-                  echo" </div>";
-                  echo" </div>";
-                  echo" </div>";
-                  echo "<br>";
+                  foreach($json_response->PassesList as $elem){
+                  echo "<tr>";
+                  echo "<td>".$elem->PassIndex ."</td>";
+                  echo "<td>".$elem->PassID ."</td>";
+                  echo "<td>".$elem->StationID ."</td>";
+                  echo "<td>".$elem->TimeStamp ."</td>";
+                  echo "<td>".$elem->VehicleID ."</td>";
+                  echo "<td>".$elem->Charge ."</td>";
+                  echo "</tr>";
+                }
+                echo "</table>";
+                echo" </div>";
+                echo" </div>";
+                echo" </div>";
+                echo "</table>";
+                echo" </div>";
+                echo" </div>";
+                echo" </div>";
+                echo "<br>";
         }
+      }
       }?>
 
 

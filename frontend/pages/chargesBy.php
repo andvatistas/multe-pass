@@ -41,7 +41,7 @@
       </div>
   </div>
   <div class = "d-flex justify-content-center" style = "padding-top:20px;">
-    <button type="submit" class="btn btn-primary">Send Request</button>
+    <button id = "main_button" type="submit" class="btn btn-primary">Send Request</button>
   </div>
 </form>
 </div>
@@ -84,7 +84,15 @@
     else {
     echo "<div class = 'container d-flex justify-content-center'>
       <div class = 'card' style = 'padding:10px'>
-        <div class = 'card-body'>
+        <div class = 'card-body'>";
+        if ($json_response == null){
+          echo "<p>No Data Found! Check your query</p>";
+          echo" </div>";
+          echo" </div>";
+          echo" </div>";
+          }
+          else {
+          echo "
           <table class = 'passescosttable'>
             <thead>
               <tr>
@@ -102,11 +110,33 @@
           echo "<td>".$json_response->PeriodTo."</td>";
           echo "</tr>";
           echo "</table>";
-          echo" </div>";
-          echo" </div>";
-          echo" </div>";
+
+
+
+          echo "<br>";
+          echo "<div class='b-example-divider'></div>";
+          echo "<table class = 'passescosttable'>
+            <thead>
+              <tr>
+                <th>Visiting Operator</th>
+                <th>Number Of Passes</th>
+                <th>Passes Cost</th>
+              </tr>
+            </thead>";
+              foreach($json_response->PPOList as $elem){
+              echo "<tr>";
+              echo "<td>".$elem->VisitingOperator ."</td>";
+              echo "<td>".$elem->NumberOfPasses ."</td>";
+              echo "<td>".$elem->PassesCost ."</td>";
+              echo "</tr>";
+            }
+            echo "</table>";
+            echo" </div>";
+            echo" </div>";
+            echo" </div>";
         }
-      }?>
+      }
+    }?>
         <br>
   <!-- Footer -->
   <?php include '../components/footer.php';?>
