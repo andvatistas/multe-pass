@@ -16,8 +16,15 @@
       <li class='nav-item'>
         <a class='nav-link active' aria-current='page' href='admin.php'>Admin</a>
       </li>
+
+      <li class='nav-item'>
+        <a class='nav-link active' aria-current='page' href='statistics.php'>Statistics</a>
+      </li>
+      <li class='nav-item'>
+        <a class='nav-link active' aria-current='page' href='settlements.php'>Settlements</a>
+      </li>
       <li class='nav-item dropdown'>
-        <a class='nav-link dropdown-toggle' href = '#' role = 'button' data-bs-toggle='dropdown' data-bs-target=''#navbar-nav' aria-expanded='false' id='navbarDropdown'>Request Pages</a>
+        <a class='nav-link dropdown-toggle' href = '#' role = 'button' data-bs-toggle='dropdown' data-bs-target=''#navbar-nav' aria-expanded='false' id='navbarDropdown' style = 'color:#ffffff;'>Request Pages</a>
         <ul class = 'dropdown-menu' aria-labelledby='navbarDropdown'>
           <li>
             <a class = 'dropdown-item' href ='passesAnalysis.php'>Passes Analysis</a>
@@ -30,18 +37,13 @@
           </li>
         </ul>
       </li>
-      <li class='nav-item'>
-        <a class='nav-link active' aria-current='page' href='statistics.php'>Statistics</a>
-      </li>
-      <li class='nav-item'>
-        <a class='nav-link active' aria-current='page' href='settlements.php'>Settlements</a>
-      </li>
     </ul>
     <ul class='nav navbar-nav navbar-right'>
       <li>
         <li class ='nav-item'>
           <a class='nav-link active' aria-current='page' href='about.php'>About</a>
       </li>
+
   </div>
 </div>
 </nav>

@@ -17,7 +17,7 @@
       <div class = "container m-10 p-4">
         <div class = "card" style = "width:30%;">
           <div class = "card-body">
-            <p style = "font-weight:bold">Members of TL21-60:</p>
+            <h4>Members of TL21-60:</h4>
             <p>   Andreas Vatistas | el18020
             <br>
                Vasilis Vrettos | el18126
@@ -31,7 +31,7 @@
           <br>
           <div class = "card">
             <div class = "card-body">
-              <p style = "font-weight:bold">Short Description:</p>
+            <h4>Short Description:</h4>
                 This is the Frontend UI of the Multe-Pass aplication. It is built using the Bootstrap 5 HTML/CSS/Javascript library and communicates with our API using PHP.
 
               </div>

@@ -18,14 +18,24 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+    <div class='d-flex' style='height:100%; width:1px; background-color:black;'>
+      <div class='vr'></div>
+    </div>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="pages/admin.php">Admin</a>
           </li>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="pages/statistics.php">Statistics</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="pages/settlements.php">Settlements</a>
+          </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href = "#" role = "button" data-bs-toggle="dropdown" data-bs-target="#navbar-nav" aria-expanded="false" id="navbarDropdown">Request Pages</a>
+            <a class="nav-link dropdown-toggle" href = "#" role = "button" data-bs-toggle="dropdown" data-bs-target="#navbar-nav" aria-expanded="false" id="navbarDropdown" style = 'color:#ffffff;'>Request Pages</a>
             <ul class = "dropdown-menu" aria-labelledby="navbarDropdown">
               <li>
                 <a class = "dropdown-item" href ="pages/passesAnalysis.php">Passes Analysis</a>
@@ -37,13 +47,6 @@
                 <a class="dropdown-item" href="pages/passesCost.php">Passes Cost</a>
               </li>
             </ul>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="pages/statistics.php">Statistics</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="pages/settlements.php">Settlements</a>
-          </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li>
@@ -57,8 +60,8 @@
   <div class="b-example-divider"></div>
 
   <div class = "container">
-    <h1>Multe-Pass Main Page</h1>
-    <div class ="row justify-content-md-center mt-2 mb-4">
+    <h1 class = 'ml-2 mt-2 p-1'>Multe-Pass Main Page</h1>
+    <div class ="row d-flex justify-content-evenly mt-2 mb-4">
       <div class = "col">
         <div class = "card">
           <div class = "card-body">
@@ -68,12 +71,12 @@
         </div>
       </div>
     </div>
-    <div class ="row justify-content-md-center" >
+    <div class ="row d-flex justify-content-evenly mt-2 mb-4" >
       <div class = "col">
         <div class = "card">
           <div class = "card-body">
             <h4>Admin</h4>
-            <p>Admin Page allows you to run requests that</p>
+            <p>Admin Page allows you to run requests that check on the Server's health or resets various tables of our Database.</p>
           </div>
         </div>
       </div>
@@ -89,7 +92,15 @@
         <div class = "card">
           <div class = "card-body">
             <h4>Statistics</h4>
-            <p>Statistics page give you data for the operators, either one by one or all together. These statistics include: </p>
+            <p>Statistics page give you stats for the operators or the various stations. These statistics are accompanied by either pie or bar charts.</p>
+          </div>
+        </div>
+      </div>
+      <div class = "col">
+        <div class = "card">
+          <div class = "card-body">
+            <h4>Settlements</h4>
+            <p>The Settlements page uses a form to calculate the amount that one operator has to pay to another operator. </p>
           </div>
         </div>
       </div>

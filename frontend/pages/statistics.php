@@ -9,7 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
-    <title>Multe-Pass Passes Analysis</title>
+    <title>Multe-Pass Statistics</title>
   </head>
   <body>
     <!-- NavBar -->
@@ -89,9 +89,9 @@
             echo "</table>";
             echo" </div>";
             echo" </div>";
-            echo "<div class = 'card' >";
-            echo "<div class = 'card-body d-flex align-self-center'>";
-            echo "<div class = 'chart-container'>";
+            echo "<div class = 'card'>";
+            echo "<div class = 'card-body d-flex align-self-center' style= 'width:90%'>";
+            echo "<div class = 'chart-container' style = 'width:500px;'>";
             echo "<canvas id='pieChart'></canvas>";
             echo" </div>";
             echo" </div>";
@@ -123,11 +123,13 @@
 
       elseif ($type == 'station'){
         echo "<br>";
-        echo "<div class = 'container'>
-          <div class = 'card' style = 'padding:10px'>
-            <div class = 'card-body d-flex align-self-center'>";
+        echo "<div class = 'container d-flex justify-content-evenly'>
+          <div class = 'row'>
+            <div class = 'card'>
+              <div class = 'card-body'>";
             if ($json_response == null){
-              echo "<p>No Data Found! Check your query</p>";
+              echo "<p>No Data Found! Check your form</p>";
+              echo" </div>";
               echo" </div>";
               echo" </div>";
               echo" </div>";
@@ -156,11 +158,14 @@
               echo "</table>";
               echo" </div>";
               echo" </div>";
-              echo "<div class = 'card m-2 p-2' style = 'padding:10px'>
-                <div class = 'card-body d-flex align-self-center'>";
               echo" </div>";
-              echo "<div class = 'chart-container' style ='position: relative;'>";
+              echo "<div class = 'row' style = 'height:100%'>";
+              echo "<div class = 'card'>
+                <div class = 'card-body' style = 'width:90%;'>";
+              echo "<div class = 'chart-container' style = 'width:800px;'>";
               echo "<canvas id='pieChart'></canvas>";
+              echo" </div>";
+              echo" </div>";
               echo" </div>";
               echo" </div>";
               echo" </div>";
