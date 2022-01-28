@@ -40,36 +40,45 @@ function toCSV(json) {
     function isArray(what) {
         return Object.prototype.toString.call(what) === '[object Array]';
     }
-    let fieldsOuter = Object.keys(json);
-    let valuesOuter = Object.values(json);
 
-    let counter=0;
-    let helpJson ={};
+    var array = [];
     for (var i in json) {
-        if (!isArray(json[i])) {
-            helpJson = Object.assign(helpJson, { [i] : json[i]})
-        }
-        // console.log(json[i]);
-        if (isArray(json[i])) {
-            fieldsOuter = fieldsOuter.slice(0,counter);
-            valuesOuter = valuesOuter.slice(0,counter);
-            // Get the fields of the first element of the array
-            const fields = fieldsOuter.concat(Object.keys(json[i][0]));
-            const opts = { fields };
-            let length=json[i].length;
-            let result={};
-            for(let counter=0; counter<length;counter++){
-                json[i][counter] = Object.assign({},helpJson,json[i][counter]);
+        if (isArray(json[i])) array = json[i];
+    }
+
+    let dataToParse;
+    let fields;
+    //If there is no array inside the json, proceed with simple csv parse
+    if (array.length == 0) {
+        fields = Object.keys(json);
+        dataToParse = json;
+    } else {
+        // Find the json array, get its fields and concat with the simple scenario. (data is duplicated)
+        var outer = [];
+        Object.keys(json).forEach((prop) => {
+            if (!isArray(json[prop])) {
+                outer.push({
+                    [prop]: json[prop]
+                });
             }
-            try {
-                const parser = new Parser(opts);
-                return parser.parse(json[i]);
-            } catch (err) {
-                console.error(err);
-                break;
-            }
+        });
+
+        const result = [];
+        for (let i = 0; i < array.length; i++) {
+            let path = JSON.parse(JSON.stringify(array[i]));
+            result.push(Object.assign({}, ...outer, path));
         }
-        counter+=1;
+
+        fields = Object.keys(result[0]);
+        dataToParse = result;
+    }
+
+    // Parse to csv
+    try {
+        const parser = new Parser({ fields });
+        return parser.parse(dataToParse);
+    } catch (err) {
+        console.error(err);
     }
 }
 
