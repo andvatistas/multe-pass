@@ -39,7 +39,10 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Statistics</a>
+            <a class="nav-link active" aria-current="page" href="pages/statistics.php">Statistics</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="pages/settlements.php">Settlements</a>
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -52,7 +55,48 @@
   </nav>
 
   <div class="b-example-divider"></div>
-    <h1>Main page vlakaaaaa aaa</h1>
+
+  <div class = "container">
+    <h1>Multe-Pass Main Page</h1>
+    <div class ="row justify-content-md-center mt-2 mb-4">
+      <div class = "col">
+        <div class = "card">
+          <div class = "card-body">
+            <h4>Welcome!</h4>
+            <p>This is TL21-60's Interoperability Software Webpage. You can run several requests for the API to answer to.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class ="row justify-content-md-center" >
+      <div class = "col">
+        <div class = "card">
+          <div class = "card-body">
+            <h4>Admin</h4>
+            <p>Admin Page allows you to run requests that</p>
+          </div>
+        </div>
+      </div>
+      <div class = "col" >
+        <div class = "card">
+          <div class = "card-body">
+            <h4>Request Pages</h4>
+            <p>This Dropdown takes you to the "Charges By", "Passes Analysis" and "Passes Cost" pages. You must fill a form </p>
+          </div>
+        </div>
+      </div>
+      <div class = "col">
+        <div class = "card">
+          <div class = "card-body">
+            <h4>Statistics</h4>
+            <p>Statistics page give you data for the operators, either one by one or all together. These statistics include: </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 <!-- Footer -->
 <div class="container">
   <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">

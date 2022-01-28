@@ -15,10 +15,10 @@
     <?php include '../components/header.php';?>
 
 <!-- Main Body -->
-<div class = "container d-flex flex-column align-items-center m-3 p-1">
-  <h4>Admin Commands</h4>
+<div class = "container d-flex flex-column align-items-center mt-3">
+  <h4 class = "mb-3">Admin Commands</h4>
   <p class = "text-center">Below you can use the 4 API endpoints for checking DB status or resetting tables.
-    Resetting confirms your action before proceeding. </p>
+    Resetting confirms your action before proceeding with a browser popup message.</p>
 
 
   <!-- Button Group -->

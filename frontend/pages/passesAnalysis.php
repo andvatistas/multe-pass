@@ -13,8 +13,9 @@
 
   <body>
     <?php include '../components/header.php';?>
-
+<!-- Title -->
 <h4 class = "d-flex justify-content-center m-3 p-1">Passes Analysis Form</h4>
+<!-- Form Container -->
 <div class = "container d-flex justify-content-center" style = "padding-top:10px;">
   <form  action = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method = 'POST'>
     <div class = "form-inline" style = "width:100%;">
@@ -58,30 +59,20 @@
   </div>
 </form>
 </div>
-
+<!-- PHP Form Handling -->
 <?php
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $curl = curl_init();
+    include '../components/helpers.php';
     $op1 = $_POST["op1"];
     $op2 = $_POST["op2"];
     $datefromraw =  date_create($_POST["datefrom"]);
     $datetoraw =  date_create($_POST["dateto"]);
     $datefrom = date_format($datefromraw,"Ymd");
     $dateto = date_format($datetoraw,"Ymd");
-
-    curl_setopt_array($curl, array(
-    CURLOPT_URL => 'http://localhost:9103/interoperability/api/passesanalysis/' . $op1 . '/' . $op2 . '/' . $datefrom . '/' . $dateto . '/',
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => '',
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 0,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => 'GET',
-  ));
-  $response = curl_exec($curl);
-  curl_close($curl);
-  $json_response = json_decode($response);
+    $api_url = 'http://localhost:9103/interoperability/api/passesanalysis/' . $op1 . '/' . $op2 . '/' . $datefrom . '/' . $dateto . '/';
+    $request_method = 'GET';
+    $response = sendRequest($api_url, $request_method);
+    $json_response = json_decode($response);
   }?>
 
   <br>

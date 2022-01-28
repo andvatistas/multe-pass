@@ -31,7 +31,10 @@
         </ul>
       </li>
       <li class='nav-item'>
-        <a class='nav-link active' aria-current='page' href='#'>Statistics</a>
+        <a class='nav-link active' aria-current='page' href='statistics.php'>Statistics</a>
+      </li>
+      <li class='nav-item'>
+        <a class='nav-link active' aria-current='page' href='settlements.php'>Settlements</a>
       </li>
     </ul>
     <ul class='nav navbar-nav navbar-right'>

@@ -62,27 +62,18 @@
 
 <?php
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $curl = curl_init();
+    include '../components/helpers.php';
+
     $op1 = $_POST["op1"];
     $op2 = $_POST["op2"];
     $datefromraw =  date_create($_POST["datefrom"]);
     $datetoraw =  date_create($_POST["dateto"]);
     $datefrom = date_format($datefromraw,"Ymd");
     $dateto = date_format($datetoraw,"Ymd");
-
-    curl_setopt_array($curl, array(
-    CURLOPT_URL => 'http://localhost:9103/interoperability/api/passescost/' . $op1 . '/' . $op2 . '/' . $datefrom . '/' . $dateto . '/',
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => '',
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 0,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => 'GET',
-  ));
-  $response = curl_exec($curl);
-  curl_close($curl);
-  $json_response = json_decode($response);
+    $api_url = 'http://localhost:9103/interoperability/api/passescost/' . $op1 . '/' . $op2 . '/' . $datefrom . '/' . $dateto . '/';
+    $request_method = 'GET';
+    $response = sendRequest($api_url, $request_method);
+    $json_response = json_decode($response);
   }?>
 
   <br>
