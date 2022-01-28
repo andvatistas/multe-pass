@@ -20,6 +20,7 @@ const chargesBy = require("./endpoints/chargesBy.js");
 const passesAnalysis = require("./endpoints/passesAnalysis.js");
 const passesCost = require("./endpoints/passesCost.js");
 const passesPerStation = require("./endpoints/passesPerStation.js");
+const stats = require("./endpoints/stats.js");
 
 //bind all endpoints to app router with base url
 //router -> when the URL is modified somehow, it will detect that change and render the view that is associated with the new URL
@@ -32,6 +33,7 @@ app.use(baseUrl, chargesBy);
 app.use(baseUrl, passesAnalysis);
 app.use(baseUrl, passesCost);
 app.use(baseUrl, passesPerStation);
+app.use(baseUrl, stats);
 app.use((err, req, res, next) => {
     console.error(err);
     res.status(500).send("500: Internal server error");

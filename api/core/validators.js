@@ -13,8 +13,14 @@ function isValidStation(value) {
     return param(value, 'StationId has a max length of 10 characters. Example: aodos').isLength({ min: 1, max: 10 })
 }
 
+//not working - just logic
+function isOperatorORStation(value){
+    return value == "operator" || value =="station";
+}
+
 module.exports = {
     isValidOpID,
     isValidDate,
-    isValidStation
+    isValidStation,
+    isOperatorORStation
 }
