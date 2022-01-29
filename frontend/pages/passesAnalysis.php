@@ -15,6 +15,7 @@
     <?php include '../components/header.php';?>
 <!-- Title -->
 <h4 class = "d-flex justify-content-center m-3 p-1">Passes Analysis Form</h4>
+
 <!-- Form Container -->
 <div class = "container d-flex justify-content-center" style = "padding-top:10px;">
   <form  action = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method = 'POST'>
