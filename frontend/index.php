@@ -46,6 +46,9 @@
               <li>
                 <a class="dropdown-item" href="pages/passesCost.php">Passes Cost</a>
               </li>
+              <li>
+                <a class="dropdown-item" href="pages/passesPerStation.php">Passes Per Station</a>
+              </li>
             </ul>
         </ul>
         <ul class="nav navbar-nav navbar-right">

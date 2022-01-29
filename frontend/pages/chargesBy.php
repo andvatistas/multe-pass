@@ -77,7 +77,7 @@
       <div class = 'card' style = 'padding:10px'>
         <div class = 'card-body'>";
         if ($json_response == null){
-          echo "<p>No Data Found! Check your query</p>";
+          echo "<p>No Data Found! Check your Request Form!</p>";
           echo" </div>";
           echo" </div>";
           echo" </div>";

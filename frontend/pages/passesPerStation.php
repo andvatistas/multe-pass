@@ -8,13 +8,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
     <title>Multe-Pass Charges By</title>
   </head>
 
   <body>
     <?php include '../components/header.php';?>
 
-<h4 class = "d-flex justify-content-center m-3 p-1">Charges By Form</h4>
+<h4 class = "d-flex justify-content-center m-3 p-1">Passes Per Station Form</h4>
 <div class = "container d-flex justify-content-center" >
   <form  action = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method = 'POST'>
     <div class = "form-inline" style = "width:100%;">
@@ -64,7 +65,7 @@
                   echo" </div>";
     }
     else {
-    echo "<div class = 'container d-flex justify-content-center'>
+    echo "<div class = 'container d-flex justify-content-evenly'>
       <div class = 'card' >
         <div class = 'card-body'>";
         if ($json_response == null){
@@ -97,8 +98,6 @@
           echo "</tr>";
           echo "</table>";
 
-
-
           echo "<br>";
           echo "<div class='b-example-divider'></div>";
           echo "<table class = 'passescosttable'>
@@ -113,21 +112,59 @@
                 <th>Pass Type</th>
               </tr>
             </thead>";
+              $home_counter = 0;
+              $visitor_counter = 0;
               foreach($json_response->PassesList as $elem){
-              echo "<tr>";
-              echo "<td>".$elem->PassIndex ."</td>";
-              echo "<td>".$elem->PassID ."</td>";
-              echo "<td>".$elem->PassTimeStamp ."</td>";
-              echo "<td>".$elem->VehicleID ."</td>";
-              echo "<td>".$elem->TagProvider ."</td>";
-              echo "<td>".$elem->PassCharge ."</td>";
-              echo "<td>".$elem->PassType ."</td>";
-              echo "</tr>";
-            }
+                echo "<tr>";
+                echo "<td>".$elem->PassIndex ."</td>";
+                echo "<td>".$elem->PassID ."</td>";
+                echo "<td>".$elem->PassTimeStamp ."</td>";
+                echo "<td>".$elem->VehicleID ."</td>";
+                echo "<td>".$elem->TagProvider ."</td>";
+                echo "<td>".$elem->PassCharge ."</td>";
+                echo "<td>".$elem->PassType ."</td>";
+                echo "</tr>";
+
+                if ($elem->PassType == 'home') {
+                  $home_counter = $home_counter + 1;
+                }
+                elseif ($elem->PassType == 'visitor') {
+                  $visitor_counter = $visitor_counter + 1;
+                }
+              }
             echo "</table>";
             echo" </div>";
             echo" </div>";
+            echo "<div class = 'col m-5'>";
+            echo " <div class = 'card' >
+                <div class = 'card-body d-flex align-self-center' style='height:100%; width:100%;'>";
+            echo "<div class = 'chart-container' style = 'width:450px;'>";
+            echo "<canvas id='pieChart'></canvas>";
             echo" </div>";
+              echo" </div>";
+            echo" </div>";
+            echo" </div>";
+            echo" </div>";
+            echo "<script>";
+            echo "
+                var ctxP = document.getElementById('pieChart').getContext('2d');
+                var myPieChart = new Chart(ctxP, {
+                  type: 'pie',
+                  data: {
+                    labels: ['home', 'visitor'],
+                    datasets: [{
+                      label: 'Type of Visits (Total Visits:".$json_response->NumberOfPasses.")',
+                      data: [" . $home_counter . ", ". $visitor_counter ."],
+                      backgroundColor: ['#F7464A', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360', '#57F908', '#A20FB2'],
+                      hoverBackgroundColor: ['#FF5A5E', '#5AD3D1', '#FFC870', '#A8B3C5', '#616774']
+                    }]
+                  },
+                  options: {
+                    responsive: true
+                  }
+                });
+                ";
+              echo "</script>";
         }
       }
     }?>

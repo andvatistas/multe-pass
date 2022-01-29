@@ -35,6 +35,9 @@
           <li>
             <a class='dropdown-item' href='passesCost.php'>Passes Cost</a>
           </li>
+          <li>
+            <a class='dropdown-item' href='passesPerStation.php'>Passes Per Station</a>
+          </li>
         </ul>
       </li>
     </ul>

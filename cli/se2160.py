@@ -65,7 +65,7 @@ sp_passesupdate.add_argument('--passesupd', nargs='?', required=True)
 sp_passesupdate.add_argument('--source', required=True)
 
 #Statistics
-sp_statistics = sp.add_parser('statistics', parents = [formatparse], help = 'Update Passes Table in Database')
+sp_statistics = sp.add_parser('statistics', parents = [formatparse], help = 'Extract statistics')
 sp_statistics.add_argument('--parameter', type = str, choices = ['operator', 'station'], required=True)
 sp_statistics.add_argument('--datefrom', required=True, help = 'Period Start - Date in the form of "YYYYMMDD"')
 sp_statistics.add_argument('--dateto', required=True,  help = 'Period End - Date in the form of "YYYYMMDD"')
