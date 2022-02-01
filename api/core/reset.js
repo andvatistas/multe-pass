@@ -29,13 +29,16 @@ function reset(res, filename, table) {
             return;
         }
         DB.query(queryAdd, (err, _) => {
-            if (err)
+            if (err){
+                console.error(err);
                 res.send(errorResponse);
+                return;
+            }
             else
                 res.send(okResponse);
         });
     })
-}
+};
 
 function resetDouble(res, filename, table, filename2, table2) {
     let queryAdd;
@@ -86,6 +89,6 @@ function resetDouble(res, filename, table, filename2, table2) {
             });
         });
     })
-}
+};
 
 module.exports = {reset, resetDouble};
