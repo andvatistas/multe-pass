@@ -22,7 +22,7 @@
             <br>
                Vasilis Vrettos | el18126
             <br>
-               Avgoustinos - Nektarios Dritsas | el18148
+               Avgoustinos - Nektarios Dritsas | el18142
             <br>
                Nikolas Rallakis | el18150
             </p>

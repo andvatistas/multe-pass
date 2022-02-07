@@ -1,11 +1,9 @@
 import argparse
 import csv
 import json
-from pprint import pprint
 import requests
 import sys
 import pandas as pd
-from requests.exceptions import HTTPError
 
 from helpers import *
 
@@ -75,7 +73,7 @@ def main():
     ns = parser.parse_args()
     if (validateNamespace(ns) == 'fail'):
         exit()
-        
+
     if ns.scope == 'healthcheck':
         request_string = "http://localhost:9103/interoperability/api/admin/healthcheck"
     elif ns.scope == 'resetvehicles':
@@ -104,7 +102,6 @@ def main():
 
         #Isolate Headers for easier control
         header = csv_data.columns
-
         #Connect to Database
         db_conn = connect_to_db()
 
