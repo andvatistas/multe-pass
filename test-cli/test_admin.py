@@ -6,7 +6,7 @@ import subprocess
 
 #Healthcheck test
 def test_healthcheck(capsys):
-    f = open('healthcheck', encoding='utf-16')
+    f = open('test_data/healthcheck', encoding='utf-16')
     output = f.read()
     process = Popen("python ../cli/se2160.py healthcheck", stdout=PIPE, stderr=PIPE)
     stdout, stderr = process.communicate()
