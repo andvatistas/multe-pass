@@ -1,7 +1,22 @@
-To run the project do the following steps:
+# API
 
-- start a local MariaDB server
-- npm install
-- npm run start
+### Περιεχόμενα:
 
-- API Documentation: https://documenter.getpostman.com/view/1431074/UVRBnmNR 
+Το API υλοποιήθηκε με χρήση του runtime environment node.js και του framework express.js.
+
+### Εγκατάσταση:
+
+```bash
+npm install
+```
+
+### Χρήση:
+Πριν την χρήση του API, βεβαιώνουμε ότι έχουμε ανοιχτή την βάση `multe-pass` σε client MariaDΒ. Μετά, τρέχουμε:
+
+```bash
+node index.js
+```
+Πλέον μπορούμε να χρησιμοποιήσουμε το API είτε απευθείας από το browser, είτε μέσω Postman είτε μέσω του Frontend/CLI.
+
+### API Documentation:
+https://documenter.getpostman.com/view/1431074/UVRBnmNR
