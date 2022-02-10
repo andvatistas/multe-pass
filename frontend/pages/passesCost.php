@@ -63,14 +63,14 @@
 <?php
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     include '../components/helpers.php';
-
+    $host_ip = setAPIName();
     $op1 = $_POST["op1"];
     $op2 = $_POST["op2"];
     $datefromraw =  date_create($_POST["datefrom"]);
     $datetoraw =  date_create($_POST["dateto"]);
     $datefrom = date_format($datefromraw,"Ymd");
     $dateto = date_format($datetoraw,"Ymd");
-    $api_url = 'http://localhost:9103/interoperability/api/passescost/' . $op1 . '/' . $op2 . '/' . $datefrom . '/' . $dateto . '/';
+    $api_url = 'http://'.$host_ip.':9103/interoperability/api/passescost/' . $op1 . '/' . $op2 . '/' . $datefrom . '/' . $dateto . '/';
     $request_method = 'GET';
     $response = sendRequest($api_url, $request_method);
     $json_response = json_decode($response);

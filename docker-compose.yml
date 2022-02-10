@@ -19,6 +19,8 @@ services:
     build:
       dockerfile: Dockerfile
       context: "./api"
+    environment:
+      - HOST_NAME=db
     depends_on:
       - db
     volumes:
@@ -34,6 +36,8 @@ services:
       - ./frontend:/var/www/html/
     ports:
       - 8000:80
+    environment:
+      - HOST_NAME=api
     depends_on:
       - api
     networks:
@@ -49,6 +53,9 @@ services:
       - ./cli:/home/multe-pass/cli
       - ./database/csv_data:/home/multe-pass/csv_data
       - ./test-cli:/home/multe-pass/test-cli
+    environment:
+      - API_HOST_NAME=api
+      - DB_HOST_NAME=db
     networks:
       - app_network
     tty: true

@@ -1,15 +1,25 @@
 import mariadb
 import sys
 import pandas as pd
+import os
 
 validOperators = ['aodos','gefyra','kentriki_odos','nea_odos','olympia_odos','moreas','egnatia']
 
+def getDBName():
+    if os.environ.get('DB_HOST_NAME') == None:
+        host_name = 'localhost'
+    else:
+        host_name = os.environ.get('DB_HOST_NAME')
+    return host_name
+
+
 def connect_to_db():
+    host_name = getDBName()
     try:
         conn = mariadb.connect(
             user="root",
             password="",
-            host="localhost",
+            host=host_name,
             port=3306,
             database="multe-pass"
         )
@@ -28,8 +38,6 @@ def validateRequestCode(code):
         print("402: No Data\n", file=sys.stderr)
     elif (code == 500):
         print("500: Internal Server Error\n", file=sys.stderr)
-
-
 
 def validateNamespace(ns):
     if (('datefrom' in ns) | ('dateto' in ns)):

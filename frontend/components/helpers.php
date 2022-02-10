@@ -16,4 +16,14 @@
 
     return $response;
   }
+
+  function setAPIName(){
+    if (getenv('HOST_NAME') !== false){
+      $host_ip = getenv('HOST_NAME');
+    }
+    else {
+    $host_ip = 'localhost';
+  }
+  return $host_ip;
+}
 ?>

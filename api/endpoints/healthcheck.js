@@ -1,10 +1,11 @@
 const mysql = require('mysql');
 const express = require('express');
 const router = express.Router();
+const host_name = process.env.HOST_NAME || 'localhost';
 
 function healthcheck(req,res) {
     const sqlConfig = {
-        host: "localhost",
+        host: host_name,
         user: "root",
         password: "",
         database: "multe-pass"

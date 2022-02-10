@@ -1,7 +1,7 @@
 const mysql = require('mysql');
-
+const host_name = process.env.HOST_NAME || 'localhost';
 const sqlConfig = {
-    host: "localhost",
+    host: host_name,
     user: "root",
     password: "",
     database: "multe-pass"

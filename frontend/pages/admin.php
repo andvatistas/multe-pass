@@ -34,10 +34,12 @@
 
 <?php
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    include '../components/helpers.php';
+    $host_ip = setAPIName();
     $curl = curl_init();
     if ($_POST["endpoint"] == "healthcheck"){
       curl_setopt_array($curl, array(
-      CURLOPT_URL => 'http://localhost:9103/interoperability/api/admin/healthcheck',
+      CURLOPT_URL => 'http://'.$host_ip.':9103/interoperability/api/admin/healthcheck',
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_ENCODING => '',
       CURLOPT_MAXREDIRS => 10,
@@ -50,7 +52,7 @@
     else{
       $endpoint = $_POST["endpoint"];
       curl_setopt_array($curl, array(
-      CURLOPT_URL => 'http://localhost:9103/interoperability/api/admin/' . $endpoint,
+      CURLOPT_URL => 'http://'.$host_ip.':9103/interoperability/api/admin/' . $endpoint,
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_ENCODING => '',
       CURLOPT_MAXREDIRS => 10,
