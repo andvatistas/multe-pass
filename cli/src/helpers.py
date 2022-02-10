@@ -5,16 +5,8 @@ import os
 
 validOperators = ['aodos','gefyra','kentriki_odos','nea_odos','olympia_odos','moreas','egnatia']
 
-def getDBName():
-    if os.environ.get('DB_HOST_NAME') == None:
-        host_name = 'localhost'
-    else:
-        host_name = os.environ.get('DB_HOST_NAME')
-    return host_name
-
-
 def connect_to_db():
-    host_name = getDBName()
+    host_name = os.environ.get('DB_HOST_NAME', 'localhost')
     try:
         conn = mariadb.connect(
             user="root",

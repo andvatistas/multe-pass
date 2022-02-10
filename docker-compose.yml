@@ -13,6 +13,7 @@ services:
       - ./database/multe-pass.sql:/docker-entrypoint-initdb.d/dump.sql
     networks:
       - app_network
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_general_ci']
   api:
     restart: always
     container_name: api
@@ -24,6 +25,7 @@ services:
     depends_on:
       - db
     volumes:
+      - ./database:/database
       - ./api:/app
     ports:
       - 9103:9103
@@ -50,7 +52,6 @@ services:
     depends_on:
       - api
     volumes:
-      - ./cli:/home/multe-pass/cli
       - ./database/csv_data:/home/multe-pass/csv_data
       - ./test-cli:/home/multe-pass/test-cli
     environment:

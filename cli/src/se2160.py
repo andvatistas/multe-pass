@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#!/usr/bin/env python3
 import argparse
 import csv
 import json
@@ -15,16 +15,10 @@ from helpers import *
 # 4)Print the request output depending on format
 
 #Get API ip ("localhost" for local or "api" for Docker)
-def getAPIName():
-    if os.environ.get('API_HOST_NAME') == None:
-        host_name = 'localhost'
-    else:
-        host_name = os.environ.get('API_HOST_NAME')
-    return host_name
 
 def main():
 #Parser Initialization
-    host_name = getAPIName()
+    host_name = os.environ.get('API_HOST_NAME', 'localhost')
     parser = argparse.ArgumentParser(description = 'CLI Interoperability API')
 
     #Format Parser
@@ -84,7 +78,7 @@ def main():
     ns = parser.parse_args()
     if (validateNamespace(ns) == 'fail'):
         exit()
-
+    #Request URL switch-case
     if ns.scope == 'healthcheck':
         request_string = "http://" + host_name + ":9103/interoperability/api/admin/healthcheck"
     elif ns.scope == 'resetvehicles':
