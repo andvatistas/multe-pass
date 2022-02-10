@@ -11,8 +11,39 @@
 
 Github repository of Multe-Pass software.
 
-## Team Members of TL21-60:
+## Μέλη της ομάδας TL21-60:
 - Andreas Vatistas | el18020
 - Vasilis Vrettos | el18126
 - Avgoustinos - Nektarios Dritsas | el18142
 - Nicholas Rallakis | el18150
+
+# Εγκατάσταση
+
+# Docker
+Ολόκληρη η εφαρμογή έχει γίνει "Dockerized" και μπορεί να γίνει installed πολύ εύκολα εάν έχετε διαθέσιμη την εφαρμογή `Docker`.
+
+## Εγκατάσταση με Docker:
+
+1. Ανοίγετε terminal στο home directory του repository
+2. Εκτελείτε την παρακάτω εντολή (βεβαιωθείτε ότι έχετε το Docker Compose πρώτα, αλλιώς κατεβάστε το από το επίσημο site ή με την χρήση του αγαπημένου σας packet manager):
+```bash
+docker-compose up
+```
+3. Παρακολουθήστε την εγκατάσταση των images και την δημιουργία των containers. Με το που τελειώσει η εγκατάσταση κάντε χρήση της παρακάτω εντολής για να δείτε εάν ενεργοποιήθηκαν ορθά τα containers
+```bash
+docker ps
+```
+Πρέπει να δείτε 4 containers να τρέχουν:
+  - MariaDB
+  - API
+  - PHP-Apache
+  - CLI
+
+Πλέον μπορείτε να χρησιμοποιήσετε την υπηρεσία κανονικά. Παρακάτω υπάρχει ο πίνακας με τα ports που ακούνε οι υπηρεσίες στο `HOST` μηχάνημα:
+
+  | SERVICE | PORT |
+  | ------- | ---- |
+  | MariaDB | 3306 |
+  | API | 9103 |
+  | Frontend - Apache | 8000 |
+  | CLI | *NO PORT NEEDED* |

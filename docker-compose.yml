@@ -13,7 +13,6 @@ services:
       - ./database/multe-pass.sql:/docker-entrypoint-initdb.d/dump.sql
     networks:
       - app_network
-
   api:
     restart: always
     container_name: api
@@ -28,8 +27,6 @@ services:
       - 9103:9103
     networks:
       - app_network
-
-
   web:
     image: php:7.4-apache
     container_name: php-apache
@@ -41,7 +38,21 @@ services:
       - api
     networks:
       - app_network
-
+  cli:
+    container_name: cli
+    build:
+      dockerfile: Dockerfile
+      context: "./cli"
+    depends_on:
+      - api
+    volumes:
+      - ./cli:/home/multe-pass/cli
+      - ./database/csv_data:/home/multe-pass/csv_data
+      - ./test-cli:/home/multe-pass/test-cli
+    networks:
+      - app_network
+    tty: true
+    stdin_open: true
 networks:
   app_network:
       driver: bridge
