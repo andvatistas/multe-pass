@@ -1,9 +1,11 @@
+#!/usr/bin/env python3
 import argparse
 import csv
 import json
 import requests
 import sys
 import pandas as pd
+import os
 
 from helpers import *
 
@@ -12,8 +14,11 @@ from helpers import *
 # 3)Change the request URL depending on the input
 # 4)Print the request output depending on format
 
+#Get API ip ("localhost" for local or "api" for Docker)
+
 def main():
 #Parser Initialization
+    host_name = os.environ.get('API_HOST_NAME', 'localhost')
     parser = argparse.ArgumentParser(description = 'CLI Interoperability API')
 
     #Format Parser
@@ -73,25 +78,25 @@ def main():
     ns = parser.parse_args()
     if (validateNamespace(ns) == 'fail'):
         exit()
-
+    #Request URL switch-case
     if ns.scope == 'healthcheck':
-        request_string = "http://localhost:9103/interoperability/api/admin/healthcheck"
+        request_string = "http://" + host_name + ":9103/interoperability/api/admin/healthcheck"
     elif ns.scope == 'resetvehicles':
-        request_string = "http://localhost:9103/interoperability/api/admin/resetvehicles"
+        request_string = "http://" + host_name + ":9103/interoperability/api/admin/resetvehicles"
     elif ns.scope == 'resetpasses':
-        request_string = "http://localhost:9103/interoperability/api/admin/resetpasses"
+        request_string = "http://" + host_name + ":9103/interoperability/api/admin/resetpasses"
     elif ns.scope == 'resetstations':
-        request_string = "http://localhost:9103/interoperability/api/admin/resetstations"
+        request_string = "http://" + host_name + ":9103/interoperability/api/admin/resetstations"
     elif ns.scope == 'passesperstation':
-        request_string = "http://localhost:9103/interoperability/api/passesperstation/" + str(ns.station) + "/" + str(ns.datefrom) + "/" + str(ns.dateto)
+        request_string = "http://" + host_name + ":9103/interoperability/api/passesperstation/" + str(ns.station) + "/" + str(ns.datefrom) + "/" + str(ns.dateto)
     elif ns.scope == 'passesanalysis':
-        request_string = "http://localhost:9103/interoperability/api/PassesAnalysis/" + str(ns.op1) + "/" + str(ns.op2) + "/" + str(ns.datefrom) +"/" + str(ns.dateto)
+        request_string = "http://" + host_name + ":9103/interoperability/api/PassesAnalysis/" + str(ns.op1) + "/" + str(ns.op2) + "/" + str(ns.datefrom) +"/" + str(ns.dateto)
     elif ns.scope == 'passescost':
-        request_string = "http://localhost:9103/interoperability/api/PassesCost/" + str(ns.op1) + "/" + str(ns.op2) + "/" + str(ns.datefrom) +"/" + str(ns.dateto)
+        request_string = "http://" + host_name + ":9103/interoperability/api/PassesCost/" + str(ns.op1) + "/" + str(ns.op2) + "/" + str(ns.datefrom) +"/" + str(ns.dateto)
     elif ns.scope == 'chargesby':
-        request_string = "http://localhost:9103/interoperability/api/ChargesBy/" + str(ns.op) + "/" + str(ns.datefrom) + "/" + str(ns.dateto)
+        request_string = "http://" + host_name + ":9103/interoperability/api/ChargesBy/" + str(ns.op) + "/" + str(ns.datefrom) + "/" + str(ns.dateto)
     elif ns.scope == 'statistics':
-        request_string = "http://localhost:9103/interoperability/api/stats/" + str(ns.parameter) + "/" + str(ns.datefrom) + "/" + str(ns.dateto)
+        request_string = "http://" + host_name + ":9103/interoperability/api/stats/" + str(ns.parameter) + "/" + str(ns.datefrom) + "/" + str(ns.dateto)
 
     elif ns.scope == 'admin':
         delimiter_format = ns.delimiter

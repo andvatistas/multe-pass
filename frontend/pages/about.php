@@ -24,7 +24,7 @@
             <br>
                Avgoustinos - Nektarios Dritsas | el18142
             <br>
-               Nikolas Rallakis | el18150
+               Nicholas Rallakis | el18150
             </p>
             </div>
           </div>

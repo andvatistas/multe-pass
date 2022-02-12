@@ -42,14 +42,15 @@
     </div>
 
     <?php
+      include '../components/helpers.php';
+      $host_ip = setAPIName();
       if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        include '../components/helpers.php';
         $type = $_POST["type"];
         $datefromraw =  date_create($_POST["datefrom"]);
         $datetoraw =  date_create($_POST["dateto"]);
         $datefrom = date_format($datefromraw,"Ymd");
         $dateto = date_format($datetoraw,"Ymd");
-        $api_url = 'http://localhost:9103/interoperability/api/stats/' . $type . '/' . $datefrom . '/' . $dateto . '/';
+        $api_url = 'http://'.$host_ip.':9103/interoperability/api/stats/' . $type . '/' . $datefrom . '/' . $dateto . '/';
         $request_method = 'GET';
         $response = sendRequest($api_url, $request_method);
         $json_response = json_decode($response);

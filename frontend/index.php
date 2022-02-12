@@ -79,7 +79,7 @@
         <div class = "card">
           <div class = "card-body">
             <h4>Admin</h4>
-            <p>Admin Page allows you to run requests that check on the Server's health or resets various tables of our Database.</p>
+            <p>Admin Page allows you to run requests that check on the Server's health or reset various tables of our Database.</p>
           </div>
         </div>
       </div>
@@ -87,7 +87,7 @@
         <div class = "card">
           <div class = "card-body">
             <h4>Request Pages</h4>
-            <p>This Dropdown takes you to the "Charges By", "Passes Analysis" and "Passes Cost" pages. You must fill a form </p>
+            <p>This Dropdown takes you to the "Charges By", "Passes Analysis" and "Passes Cost" pages. You must fill a form to print data "served" by the API.</p>
           </div>
         </div>
       </div>

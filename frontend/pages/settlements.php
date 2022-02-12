@@ -63,8 +63,9 @@
     </div>
 
     <?php
+    include '../components/helpers.php';
+    $host_ip = setAPIName();
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      include '../components/helpers.php';
       $op1 = $_POST["op1"];
       $op2 = $_POST["op2"];
       $datefromraw =  date_create($_POST["datefrom"]);
@@ -82,10 +83,10 @@
                     echo" </div>";
       }
         else {
-          $ps_url1 = 'http://localhost:9103/interoperability/api/passescost/' . $op1 . '/' . $op2 . '/' . $datefrom . '/' . $dateto . '/';
-          $ps_url2 = 'http://localhost:9103/interoperability/api/passescost/' . $op2 . '/' . $op1 . '/' . $datefrom . '/' . $dateto . '/';
-          $pa_url1 = 'http://localhost:9103/interoperability/api/passesanalysis/' . $op1 . '/' . $op2 . '/' . $datefrom . '/' . $dateto . '/';
-          $pa_url2 = 'http://localhost:9103/interoperability/api/passesanalysis/' . $op2 . '/' . $op1 . '/' . $datefrom . '/' . $dateto . '/';
+          $ps_url1 = 'http://'.$host_ip.':9103/interoperability/api/passescost/' . $op1 . '/' . $op2 . '/' . $datefrom . '/' . $dateto . '/';
+          $ps_url2 = 'http://'.$host_ip.':9103/interoperability/api/passescost/' . $op2 . '/' . $op1 . '/' . $datefrom . '/' . $dateto . '/';
+          $pa_url1 = 'http://'.$host_ip.':9103/interoperability/api/passesanalysis/' . $op1 . '/' . $op2 . '/' . $datefrom . '/' . $dateto . '/';
+          $pa_url2 = 'http://'.$host_ip.':9103/interoperability/api/passesanalysis/' . $op2 . '/' . $op1 . '/' . $datefrom . '/' . $dateto . '/';
           $request_method = 'GET';
 
           $ps_response1 = json_decode(sendRequest($ps_url1, $request_method));
