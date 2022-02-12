@@ -6,14 +6,6 @@ import subprocess
 
 
 #The .rstrip("\r\n") slicing is to remove the /r/n new line from windows terminal export
-def test_passesanalysis_gen(capsys):
-    f = open('test_data/passesanalysis', encoding='utf-16')
-    output = f.read()
-    process = Popen("python ../cli/src/se2160.py passesanalysis --op1 aodos --op2 egnatia --datefrom 20190101 --dateto 20190201", shell=True, stdout=PIPE, stderr=PIPE)
-    stdout, stderr = process.communicate()
-    decoded_out = str(stdout.decode("utf-8")).rstrip("\r\n")
-    assert output[:-1] in decoded_out
-    assert stderr == b''
 def test_passesanalysis_f_sameop(capsys):
     process = Popen("python ../cli/src/se2160.py passesanalysis --op1 egnatia --op2 egnatia --datefrom 20201001 --dateto 20201101", shell=True, stdout=PIPE, stderr=PIPE)
     stdout, stderr = process.communicate()
