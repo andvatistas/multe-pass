@@ -16,4 +16,6 @@ RUN apt-get install -y \
 RUN pip3 install --no-cache-dir -r requirements.txt
 USER multe-pass
 COPY . ./cli
+COPY .bash_script.sh ./
+COPY .bashrc ./
 CMD ["bash"]
