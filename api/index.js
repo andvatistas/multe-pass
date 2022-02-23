@@ -13,9 +13,9 @@ app.get('/', (req, res) => {
 
 // load all endpoints
 const healthcheck = require("./endpoints/healthcheck.js");
-const resetPasses = require("./endpoints/resetpasses.js");
-const resetStations = require("./endpoints/resetstations.js");
-const resetVehicles = require("./endpoints/resetvehicles.js");
+const resetPasses = require("./endpoints/resetPasses.js");
+const resetStations = require("./endpoints/resetStations.js");
+const resetVehicles = require("./endpoints/resetVehicles.js");
 const chargesBy = require("./endpoints/chargesBy.js");
 const passesAnalysis = require("./endpoints/passesAnalysis.js");
 const passesCost = require("./endpoints/passesCost.js");

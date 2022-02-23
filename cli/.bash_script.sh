@@ -1,5 +1,4 @@
 #!/bin/bash
-
 function se2160() {
     /usr/local/bin/python3 ~/cli/src/se2160.py $@
 }
