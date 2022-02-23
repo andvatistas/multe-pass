@@ -7,7 +7,7 @@ const { isValidDate, isValidOpID, isOperatorORStation } = require('../core/valid
 
 function statsQuery(param, date_from, date_to) {
     let query = `
-	SELECT ${param}.id, COUNT(${param}.id) FROM
+	SELECT ${param}.id, COUNT(${param}.id) as Count FROM
 		pass
 		INNER JOIN station ON pass.stationRef = station.id
 		INNER JOIN tag ON pass.vehicleRef = tag.vehicleId
