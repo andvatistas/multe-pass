@@ -79,24 +79,25 @@ def main():
     if (validateNamespace(ns) == 'fail'):
         exit()
     #Request URL switch-case
+    base_url = f"http://{host_name}:9103/interoperability/api/"
     if ns.scope == 'healthcheck':
-        request_string = "http://" + host_name + ":9103/interoperability/api/admin/healthcheck"
+        request_string = base_url + "/admin/healthcheck"
     elif ns.scope == 'resetvehicles':
-        request_string = "http://" + host_name + ":9103/interoperability/api/admin/resetvehicles"
+        request_string = base_url + "/admin/resetvehicles"
     elif ns.scope == 'resetpasses':
-        request_string = "http://" + host_name + ":9103/interoperability/api/admin/resetpasses"
+        request_string = base_url + "/admin/resetpasses"
     elif ns.scope == 'resetstations':
-        request_string = "http://" + host_name + ":9103/interoperability/api/admin/resetstations"
+        request_string = base_url + "/admin/resetstations"
     elif ns.scope == 'passesperstation':
-        request_string = "http://" + host_name + ":9103/interoperability/api/passesperstation/" + str(ns.station) + "/" + str(ns.datefrom) + "/" + str(ns.dateto)
+        request_string = base_url + f"/passesperstation/{ns.station}/{ns.datefrom}/{ns.dateto}"
     elif ns.scope == 'passesanalysis':
-        request_string = "http://" + host_name + ":9103/interoperability/api/PassesAnalysis/" + str(ns.op1) + "/" + str(ns.op2) + "/" + str(ns.datefrom) +"/" + str(ns.dateto)
+        request_string = base_url + f"/PassesAnalysis/{ns.op1}/{ns.op2}/{ns.datefrom}/{ns.dateto}"
     elif ns.scope == 'passescost':
-        request_string = "http://" + host_name + ":9103/interoperability/api/PassesCost/" + str(ns.op1) + "/" + str(ns.op2) + "/" + str(ns.datefrom) +"/" + str(ns.dateto)
+        request_string = base_url + f"/PassesCost/{ns.op1}/{ns.op2}/{ns.datefrom}/{ns.dateto}"
     elif ns.scope == 'chargesby':
-        request_string = "http://" + host_name + ":9103/interoperability/api/ChargesBy/" + str(ns.op) + "/" + str(ns.datefrom) + "/" + str(ns.dateto)
+        request_string = base_url + f"/ChargesBy/{ns.op}/{ns.datefrom}/{ns.dateto}"
     elif ns.scope == 'statistics':
-        request_string = "http://" + host_name + ":9103/interoperability/api/stats/" + str(ns.parameter) + "/" + str(ns.datefrom) + "/" + str(ns.dateto)
+        request_string = base_url + f"/stats/{ns.parameter}/{ns.datefrom}/{ns.dateto}"
 
     elif ns.scope == 'admin':
         delimiter_format = ns.delimiter
@@ -137,16 +138,16 @@ def main():
     if (ns.format=='csv'):
         request_string += "?format=csv"
 
-    if ((ns.scope != 'resetvehicles') | (ns.scope != 'resetpasses') | (ns.scope != 'resetstations')):
+    if (ns.scope != 'resetvehicles') and (ns.scope != 'resetpasses') and (ns.scope != 'resetstations'):
         request = requests.get(request_string)
     else:
         request = requests.post(request_string)
 
-    validateRequestCode(request.status_code);
+    validateRequestCode(request.status_code)
 
-    if ((ns.scope != 'admin') & (ns.format=='json')):
+    if (ns.scope != 'admin') & (ns.format == 'json'):
         print_json(request)
-    if ((ns.scope != 'admin') & (ns.format=='csv')):
+    if (ns.scope != 'admin') & (ns.format == 'csv'):
         print_csv(request)
 
 if __name__== "__main__":
