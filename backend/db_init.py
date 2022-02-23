@@ -11,7 +11,6 @@ def db_init():
     create_database("`multe-pass`")
     conn = connect_to_db()
     cur = conn.cursor()
-    cur.execute("use `multe-pass`")
     cur.execute(f"source `{sql_dump}`")
     conn.close()
 
