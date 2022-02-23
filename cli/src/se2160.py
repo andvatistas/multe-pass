@@ -6,6 +6,7 @@ import requests
 import sys
 import pandas as pd
 import os
+import datetime
 
 from helpers import *
 
@@ -16,9 +17,45 @@ from helpers import *
 
 #Get API ip ("localhost" for local or "api" for Docker)
 
+def getRequestString(ns):
+    host_name = os.environ.get('API_HOST_NAME', 'localhost')
+
+    #Request URL switch-case
+    base_url = f"http://{host_name}:9103/interoperability/api/"
+    if ns.scope == 'healthcheck':
+        request_string = base_url + "admin/healthcheck"
+    elif ns.scope == 'resetvehicles':
+        request_string = base_url + "admin/resetvehicles"
+    elif ns.scope == 'resetpasses':
+        request_string = base_url + "admin/resetpasses"
+    elif ns.scope == 'resetstations':
+        request_string = base_url + "admin/resetstations"
+    elif ns.scope == 'passesperstation':
+        request_string = base_url + f"passesperstation/{ns.station}/{ns.datefrom}/{ns.dateto}"
+    elif ns.scope == 'passesanalysis':
+        request_string = base_url + f"PassesAnalysis/{ns.op1}/{ns.op2}/{ns.datefrom}/{ns.dateto}"
+    elif ns.scope == 'passescost':
+        request_string = base_url + f"PassesCost/{ns.op1}/{ns.op2}/{ns.datefrom}/{ns.dateto}"
+    elif ns.scope == 'chargesby':
+        request_string = base_url + f"ChargesBy/{ns.op}/{ns.datefrom}/{ns.dateto}"
+    elif ns.scope == 'statistics':
+        request_string = base_url + f"stats/{ns.parameter}/{ns.datefrom}/{ns.dateto}"
+
+    #add ?format=csv on request if --format=csv was used
+    if (ns.format=='csv'):
+        request_string += "?format=csv"
+
+    return request_string
+
+def sendRequest(ns, request_string):
+    if ns.scope not in ['resetvehicles', 'resetstations', 'resetpasses']:
+        request = requests.get(request_string)
+    else:
+        request = requests.post(request_string)
+    return request
+
 def main():
 #Parser Initialization
-    host_name = os.environ.get('API_HOST_NAME', 'localhost')
     parser = argparse.ArgumentParser(description = 'CLI Interoperability API')
 
     #Format Parser
@@ -76,30 +113,14 @@ def main():
 
     #Pass final arguments to Namespace
     ns = parser.parse_args()
+
     if (validateNamespace(ns) == 'fail'):
         exit()
-    #Request URL switch-case
-    base_url = f"http://{host_name}:9103/interoperability/api/"
-    if ns.scope == 'healthcheck':
-        request_string = base_url + "/admin/healthcheck"
-    elif ns.scope == 'resetvehicles':
-        request_string = base_url + "/admin/resetvehicles"
-    elif ns.scope == 'resetpasses':
-        request_string = base_url + "/admin/resetpasses"
-    elif ns.scope == 'resetstations':
-        request_string = base_url + "/admin/resetstations"
-    elif ns.scope == 'passesperstation':
-        request_string = base_url + f"/passesperstation/{ns.station}/{ns.datefrom}/{ns.dateto}"
-    elif ns.scope == 'passesanalysis':
-        request_string = base_url + f"/PassesAnalysis/{ns.op1}/{ns.op2}/{ns.datefrom}/{ns.dateto}"
-    elif ns.scope == 'passescost':
-        request_string = base_url + f"/PassesCost/{ns.op1}/{ns.op2}/{ns.datefrom}/{ns.dateto}"
-    elif ns.scope == 'chargesby':
-        request_string = base_url + f"/ChargesBy/{ns.op}/{ns.datefrom}/{ns.dateto}"
-    elif ns.scope == 'statistics':
-        request_string = base_url + f"/stats/{ns.parameter}/{ns.datefrom}/{ns.dateto}"
+    #passesupd code
+    if (ns.scope == 'admin'):
+        csv_dt_f = '%d/%m/%Y %H:%M'
+        new_dt_f = '%Y/%m/%d %H:%M:%S'
 
-    elif ns.scope == 'admin':
         delimiter_format = ns.delimiter
         file_source = ns.source
 
@@ -118,10 +139,10 @@ def main():
         length = len(csv_data.id)
 
         j = 0 #set flag for if commit was successful
-        #Run a for loop for length of csv file and INSER INTO pass one by one
+        #Run a for loop for length of csv file and INSERT INTO pass one by one
         for i in range(length):
             try:
-                cur.execute("INSERT INTO pass (id,timestamp,charge,stationRef,vehicleRef) VALUES (?, ?, ?, ?, ?)", (csv_data.id[i], str(csv_data.timestamp[i]), csv_data.charge[i], csv_data.stationRef[i], csv_data.vehicleRef[i]))
+                cur.execute("INSERT INTO pass (id,timestamp,charge,stationRef,vehicleRef) VALUES (?, ?, ?, ?, ?)", (csv_data.id[i], datetime.datetime.strptime(csv_data.timestamp[i], csv_dt_f).strftime(new_dt_f), float(csv_data.charge[i]), csv_data.stationRef[i], csv_data.vehicleRef[i]))
                 db_conn.commit()
             except mariadb.Error as err:
                 print(f"Error: {err}")
@@ -134,21 +155,14 @@ def main():
         #Close DB connection
         db_conn.close()
 
-    #add ?format=csv on request if --format=csv was used
-    if (ns.format=='csv'):
-        request_string += "?format=csv"
-
-    if (ns.scope != 'resetvehicles') and (ns.scope != 'resetpasses') and (ns.scope != 'resetstations'):
-        request = requests.get(request_string)
     else:
-        request = requests.post(request_string)
-
-    validateRequestCode(request.status_code)
-
-    if (ns.scope != 'admin') & (ns.format == 'json'):
-        print_json(request)
-    if (ns.scope != 'admin') & (ns.format == 'csv'):
-        print_csv(request)
+        request_string = getRequestString(ns)
+        request = sendRequest(ns, request_string)
+        validateRequestCode(request.status_code)
+        if (ns.format == 'json'):
+            print_json(request)
+        elif (ns.format == 'csv'):
+            print_csv(request)
 
 if __name__== "__main__":
     main()
