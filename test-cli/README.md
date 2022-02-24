@@ -14,5 +14,6 @@ python -m pytest -vv
 
 #### In Docker
 ```bash
-cli_test
+cli_unit_test
+cli_func_test
 ```
