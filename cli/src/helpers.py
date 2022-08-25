@@ -54,6 +54,8 @@ def validateNamespace(ns):
         if (len(ns.station) != 4):
             print("Station ID is not valid - Example of valid Station ID: 'AO01'", file=sys.stderr)
             return 'fail'
+    else:
+        return 'ok'
 
 
 

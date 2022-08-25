@@ -3,6 +3,7 @@ import csv
 import json
 import sys
 import mariadb
+import os
 
 def connect_to_db():
     try:
@@ -18,6 +19,15 @@ def connect_to_db():
         print(f"Error connecting to multe-pass DB: {err}")
         sys.exit(1)
     return conn
+
+def create_database(db_name:str):
+    conn = mariadb.connect(host='localhost', user='root', password='', port=3306)
+    cur = conn.cursor()
+    try:
+        cur.execute(f"CREATE DATABASE {db_name}")
+    except Exception:
+        print("Multe-pass DB already exists")
+    conn.close()
 
 def empty_table(table:str):
     db_conn = connect_to_db()
@@ -64,21 +74,3 @@ def fill_db_table(table:str ,fs:str) -> int:
 
     db_conn.close()
     return j
-
-
-def main():
-    empty_table('pass')
-    empty_table('tag')
-    empty_table('vehicle')
-    empty_table('station')
-    empty_table('operator')
-
-    fill_db_table('operator','../database/csv_data/operator.csv')
-    fill_db_table('station','../database/csv_data/station.csv')
-    fill_db_table('vehicle','../database/csv_data/vehicle.csv')
-    fill_db_table('tag','../database/csv_data/tag.csv')
-    fill_db_table('pass','../database/csv_data/pass.csv')
-
-
-if __name__ == "__main__":
-    main()

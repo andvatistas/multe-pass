@@ -19,8 +19,40 @@ Github repository of Multe-Pass software.
 
 # Εγκατάσταση
 
-# Docker
-Ολόκληρη η εφαρμογή έχει γίνει "Dockerized" και μπορεί να γίνει installed πολύ εύκολα εάν έχετε διαθέσιμη την εφαρμογή `Docker`.
+## Manual Installation
+Για περισσότερες διευκρινίσεις, διαβάστε όλα τα README της εφαρμογής
+#### Database:
+
+Ανοίγουμε πρόγραμμα ή server που μπορεί να κάνει host βάση MariaDB/MySQL. Δημιουργούμε μια βάση με το όνομα `multe-pass`.
+
+```bash
+CREATE DATABASE `multe-pass`;
+```
+
+Κάνουμε import το DB dump στην βάση (είτε μέσω PHPMyAdmin ή απευθείας από το MariaDB)
+```bash
+mariadb -u root -p multe-pass < database/multe-pass.sql
+```
+
+#### API:
+
+Πηγαίνουμε στον φάκελο `api` και τρέχουμε σε terminal `npm install`. Όταν τελείωσει το install τρέχουμε `npm start`.
+
+#### Web:
+Κάνουμε host ολόκληρο τον φάκελο `frontend` με έναν server που μπορεί να τρέξει PHP. Καλή επιλογή είναι το Nginx ή το Apache.
+
+#### CLI:
+Βεβαιωνόμαστε ότι έχουμε όλα τα requirements για να τρέξουμε το CLI:
+```bash
+pip install -r requirements.txt
+```
+Τρέχουμε το CLI απευθείας από το home directory:
+```bash
+python3 cli/src/se2160.py [scope] [parameters]
+```
+
+## Docker
+Ολόκληρη η εφαρμογή έχει γίνει "Dockerized" και μπορεί να γίνει installed πολύ εύκολα εάν έχετε διαθέσιμη την εφαρμογή `Docker`. Η εφαρμογή τρέχει βέλτιστα με την χρήση Docker.
 
 ## Εγκατάσταση με Docker:
 
@@ -39,7 +71,7 @@ docker ps
   - PHP-Apache
   - CLI
 
-Πλέον μπορείτε να χρησιμοποιήσετε την υπηρεσία κανονικά. Παρακάτω υπάρχει ο πίνακας με τα ports που ακούνε οι υπηρεσίες στο `HOST` μηχάνημα:
+Πλέον μπορείτε να χρησιμοποιήσετε την υπηρεσία κανονικά στο μηχάνημά σας. Το url που χρησιμοποιούμε είναι το `localhost`. Παρακάτω υπάρχει ο πίνακας με τα ports που ακούνε οι υπηρεσίες στο `HOST` μηχάνημα:
 
   | SERVICE | PORT |
   | ------- | ---- |
@@ -47,3 +79,9 @@ docker ps
   | API | 9103 |
   | Frontend - Apache | 8000 |
   | CLI | *NO PORT NEEDED* |
+
+  Για να χρησιμοποιήσουμε το CLI, κάνουμε σύνδεση απευθείας με το Container του είτε μέσω του Docker Desktop ή εκτελώντας την εντολή
+
+  ```bash
+  docker exec -it cli /bin/bash
+  ```
